@@ -52,6 +52,8 @@ model Eventos {
   imageSrc    String
   created_at  DateTime @default(now())
   category    String
+  local       String
+  cidade      String
   endereco    String
   numPessoas  Int
   data        DateTime
