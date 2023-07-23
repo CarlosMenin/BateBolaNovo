@@ -1,8 +1,8 @@
 'use client';
 
 import useCountries from "@/app/hooks/useCountries";
-import { SafeUser } from "@/app/types";
-import { Confirmacoes, Eventos } from "@prisma/client"
+import { SafeListing, SafeUser } from "@/app/types";
+import { Confirmacoes } from "@prisma/client"
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import {format} from 'date-fns';
@@ -12,7 +12,7 @@ import Button from "../Button";
 
 
 interface ListingCardProps{
-    data: Eventos;
+    data: SafeListing;
     confirmation?: Confirmacoes;
     onAction?: (id: string) => void;
     disabled?: boolean;

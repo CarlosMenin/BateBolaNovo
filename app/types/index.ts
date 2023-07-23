@@ -1,4 +1,11 @@
-import { User } from "@prisma/client";
+import { Eventos, User } from "@prisma/client";
+
+export type SafeListing = Omit<
+    Eventos,
+    "created_at"
+> & {
+    created_at: string;
+}
 
 export type SafeUser = Omit<
     User,
