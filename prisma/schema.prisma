@@ -46,20 +46,21 @@ model Account {
 }
 
 model Eventos {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  imageSrc    String
-  created_at  DateTime @default(now())
-  category    String
-  local       String
-  cidade      String
-  endereco    String
-  numPessoas  Int
-  data        DateTime
-  horario     DateTime
-  preco       Int
-  userId      String   @db.ObjectId
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String
+  imageSrc       String
+  created_at     DateTime @default(now())
+  category       String
+  local          String
+  cidade         String
+  endereco       String
+  numPessoas     Int
+  numConfirmados Int
+  data           DateTime
+  horario        DateTime
+  preco          Int
+  userId         String   @db.ObjectId
 
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   confirmacoes Confirmacoes[]

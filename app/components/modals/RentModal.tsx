@@ -43,8 +43,8 @@ const RentModal = () => {
     setSelectedDate(date);
     setValue('data', date.toISOString()); // Update the form's 'data' field with the new value
   };
-  
-  
+
+
 
   const [selectedTime, setSelectedTime] = useState(new Date());
 
@@ -52,7 +52,7 @@ const RentModal = () => {
     setSelectedTime(time);
     setValue('horario', time.toISOString()); // Update the form's 'horario' field with the new value
   };
-  
+
   const {
     register,
     handleSubmit,
@@ -67,6 +67,7 @@ const RentModal = () => {
       category: '',
       location: null,
       numPessoas: 1,
+      numConfirmados: 0,
       imageSrc: '',
       preco: 1,
       title: '',
@@ -208,7 +209,7 @@ const RentModal = () => {
           subtitle="Choose a date using the calendar"
           selectedDate={selectedDate}
           onChange={handleDateChange}
-          />
+        />
         <TimeInput
           title="Select a Time"
           subtitle="Choose a time using the time picker"
