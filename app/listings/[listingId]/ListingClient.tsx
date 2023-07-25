@@ -3,12 +3,17 @@
 import Container from "@/app/components/Container";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
+import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
+import useLoginModal from "@/app/hooks/useLoginModal";
 import { SafeListing, SafeUser } from "@/app/types"
 import { Confirmacoes } from "@prisma/client"
-import { useMemo } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 
-interface ListingClientProps{
+interface ListingClientProps {
     reservations?: Confirmacoes[],
     listing: SafeListing & {
         user: SafeUser
@@ -18,40 +23,99 @@ interface ListingClientProps{
 
 const ListingClient: React.FC<ListingClientProps> = ({
     listing,
-    currentUser
+    currentUser,
+    reservations = []
 }) => {
+
+    const loginModal = useLoginModal();
+    const router = useRouter();
+
+    const numAvailableSpots = listing.numPessoas - listing.numConfirmados;
+
+    const canMakeReservation = numAvailableSpots > 0;
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const onCreateReservation = useCallback(() => {
+        if (!currentUser) {
+            return loginModal.onOpen();
+        }
+
+        if (listing.numConfirmados === listing.numPessoas) {
+            toast.error("Evento lotado! Não é possível realizar mais reservas.");
+            return;
+        }
+
+        setIsLoading(true);
+
+        axios.post('/api/reservations', {
+            price: listing.preco,
+            listingid: listing?.id,
+            eventDate: listing.data,
+            eventTime: listing.horario
+        })
+            .then(() => {
+                toast.success("Presença confirmada")
+                listing.numConfirmados = listing.numConfirmados + 1
+                // Redirect to /trips
+                router.refresh();
+            })
+            .catch(() => {
+                toast.error("Algo deu errado")
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
+    }, [currentUser, listing, loginModal, router]);
+
 
     const category = useMemo(() => {
         return categories.find((item) =>
-        item.label == listing.category);
-    },[listing.category]);
-  return (
-    <Container>
-        <div className="max-2-screen-lg mx-auto">
-            <div className="flex flex-col gap-6">
-                <ListingHead
-                    title={listing.title}
-                    imageSrc={listing.imageSrc}
-                    locationValue={listing.local}
-                    id={listing.id}
-                    currentUser={currentUser}
-                />
-                <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
-                    <ListingInfo
-                        user={listing.user}
-                        category={category}
-                        description={listing.description}
-                        numPessoas= {listing.numPessoas}
-                        endereco={listing.endereco}
+            item.label == listing.category);
+    }, [listing.category]);
+    return (
+        <Container>
+            <div className="max-2-screen-lg mx-auto">
+                <div className="flex flex-col gap-6">
+                    <ListingHead
+                        title={listing.title}
+                        imageSrc={listing.imageSrc}
                         locationValue={listing.local}
-                        horario={listing.horario}
-                        data={listing.data}
+                        id={listing.id}
+                        currentUser={currentUser}
                     />
+                    <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+                        <ListingInfo
+                            user={listing.user}
+                            category={category}
+                            description={listing.description}
+                            numPessoas={listing.numPessoas}
+                            endereco={listing.endereco}
+                            locationValue={listing.local}
+                            horario={listing.horario}
+                            data={listing.data}
+                        />
+                        <div
+                            className="
+                                order-first
+                                mb-10
+                                md:order-last
+                                md: col-span-3
+                            "
+                        >
+                            <ListingReservation
+                                preco={listing.preco}
+                                numPessoas={listing.numPessoas}
+                                numConfirmados={listing.numConfirmados}
+                                onSubmit={onCreateReservation}
+                                disabled={isLoading}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </Container>
-  )
+        </Container>
+    )
 }
 
 export default ListingClient

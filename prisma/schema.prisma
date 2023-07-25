@@ -67,12 +67,13 @@ model Eventos {
 }
 
 model Confirmacoes {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String   @db.ObjectId
-  eventosId  String   @db.ObjectId
-  dataEvento DateTime
-  preco      Int
-  created_at DateTime @default(now())
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  eventosId     String   @db.ObjectId
+  dataEvento    DateTime
+  horarioEvento DateTime
+  preco         Int
+  created_at    DateTime @default(now())
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventos Eventos @relation(fields: [eventosId], references: [id], onDelete: Cascade)
