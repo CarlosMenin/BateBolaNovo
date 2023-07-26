@@ -1,45 +1,45 @@
 import { NextResponse } from "next/server";
-
-import prisma from '@/app/libs/prismadb';
+import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
-export async function POST(
-    request: Request
-){
-    const currentUser = await getCurrentUser();
+export async function POST(request: Request) {
+  const currentUser = await getCurrentUser();
 
-    if(!currentUser){
-        return NextResponse.error();
-    }
+  if (!currentUser) {
+    return NextResponse.error();
+  }
 
-    const body = await request.json();
+  const body = await request.json();
 
-    const{
-        listingid,
-        eventDate,
-        eventTime,
-        price,
-    } = body;
+  const { listingid, eventDate, eventTime, price } = body;
 
-    if(!listingid || !eventDate || !eventTime || !price){
-        return new NextResponse("Missing required fields.", { status: 400 });
-    }
+  if (!listingid || !eventDate || !eventTime || !price) {
+    return new NextResponse("Missing required fields.", { status: 400 });
+  }
 
-    const listingAndReservation = await prisma.eventos.update({
-        where:{
-            id: listingid,
+  // Incrementar o número de confirmados em 1
+  const listingAndReservation = await prisma.eventos.update({
+    where: {
+      id: listingid,
+    },
+    data: {
+      confirmacoes: {
+        create: {
+          userId: currentUser.id,
+          preco: price,
+          dataEvento: eventDate,
+          horarioEvento: eventTime,
         },
-        data: {
-            confirmacoes: {
-                create:{
-                    userId: currentUser.id,
-                    preco: price,
-                    dataEvento: eventDate,
-                    horarioEvento: eventTime
-                }
-            }
-        }
-    });
+      },
+      // Incrementar o número de confirmados em 1
+      numConfirmados: {
+        increment: 1,
+      },
+    },
+    include: {
+      confirmacoes: true,
+    },
+  });
 
-    return NextResponse.json(listingAndReservation);
+  return NextResponse.json(listingAndReservation);
 }

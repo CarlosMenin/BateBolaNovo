@@ -25,7 +25,9 @@ export async function POST(
         data,
         horario,
         cidade,
-        numConfirmados
+        numConfirmados,
+        chavePix,
+        grupo,
     } = body;
 
     const listing = await prisma.eventos.create({
@@ -42,7 +44,9 @@ export async function POST(
             horario,
             endereco,
             cidade,
-            numConfirmados
+            numConfirmados,
+            chavePix,
+            grupo
         }
     });
     return NextResponse.json(listing);

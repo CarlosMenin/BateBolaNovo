@@ -15,11 +15,13 @@ import { signIn } from 'next-auth/react';
 import useLoginModal from '@/app/hooks/useLoginModal';
 
 
-
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
-    const loginModal= useLoginModal();
+    const loginModal = useLoginModal();
     const [isLoading, setIsLoading] = useState(false);
+    const [isNormalUser, setIsNormalUser] = useState(true);
+    const [isArenaUser, setIsArenaUser] = useState(false);
+
 
     const {
         register,
@@ -32,11 +34,14 @@ const RegisterModal = () => {
             name: '',
             email: '',
             password: '',
+            isArena: false
         }
     });
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
+
+        data.isArena = isArenaUser;
 
         axios.post('/api/register', data)
             .then(() => {
@@ -53,7 +58,7 @@ const RegisterModal = () => {
     const toggle = useCallback(() => {
         registerModal.onClose();
         loginModal.onOpen();
-    },[loginModal,registerModal]);
+    }, [loginModal, registerModal]);
 
     const bodyContent = (
         <div className='flex flex-col gap-4'>
@@ -86,6 +91,31 @@ const RegisterModal = () => {
                 errors={errors}
                 required
             />
+            <div className="flex flex-col gap-2">
+                <label className="text-neutral-800">Tipo de Usuário:</label>
+                <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={isNormalUser}
+                        onChange={() => {
+                            setIsNormalUser(true);
+                            setIsArenaUser(false);
+                        }}
+                    />
+                    Usuário Normal
+                </label>
+                <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={isArenaUser}
+                        onChange={() => {
+                            setIsNormalUser(false);
+                            setIsArenaUser(true);
+                        }}
+                    />
+                    Usuário Arena
+                </label>
+            </div>
         </div>
     )
 

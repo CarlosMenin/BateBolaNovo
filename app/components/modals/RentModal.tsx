@@ -76,6 +76,8 @@ const RentModal = () => {
       cidade: '',
       data: selectedDate.toISOString(),
       horario: selectedTime.toISOString(),
+      chavePix: '',
+      grupo: '',
     }
   });
 
@@ -272,6 +274,24 @@ const RentModal = () => {
         <Input
           id="endereco"
           label="Endereço do local"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="chavePix"
+          label="Chave Pix do evento"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="grupo"
+          label="Link do grupo do evento"
           disabled={isLoading}
           register={register}
           errors={errors}

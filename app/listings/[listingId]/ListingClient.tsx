@@ -6,15 +6,16 @@ import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeListing, SafeUser } from "@/app/types"
+import { SafeListing, SafeUser, SafeReservations } from "@/app/types"
 import { Confirmacoes } from "@prisma/client"
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
+
 interface ListingClientProps {
-    reservations?: Confirmacoes[],
+    reservations?: SafeReservations[],
     listing: SafeListing & {
         user: SafeUser
     };
@@ -24,15 +25,10 @@ interface ListingClientProps {
 const ListingClient: React.FC<ListingClientProps> = ({
     listing,
     currentUser,
-    reservations = []
+    reservations = [],
 }) => {
-
     const loginModal = useLoginModal();
     const router = useRouter();
-
-    const numAvailableSpots = listing.numPessoas - listing.numConfirmados;
-
-    const canMakeReservation = numAvailableSpots > 0;
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -48,31 +44,33 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
         setIsLoading(true);
 
-        axios.post('/api/reservations', {
-            price: listing.preco,
-            listingid: listing?.id,
-            eventDate: listing.data,
-            eventTime: listing.horario
-        })
+        axios
+            .post("/api/reservations", {
+                price: listing.preco,
+                listingid: listing?.id,
+                eventDate: listing.data,
+                eventTime: listing.horario,
+            })
             .then(() => {
-                toast.success("Presença confirmada")
-                listing.numConfirmados = listing.numConfirmados + 1
+                toast.success("Presença confirmada");
+
+                listing.numConfirmados = listing.numConfirmados + 1;
+
                 // Redirect to /trips
                 router.refresh();
             })
             .catch(() => {
-                toast.error("Algo deu errado")
+                toast.error("Algo deu errado");
             })
             .finally(() => {
                 setIsLoading(false);
-            })
+            });
     }, [currentUser, listing, loginModal, router]);
 
-
     const category = useMemo(() => {
-        return categories.find((item) =>
-            item.label == listing.category);
+        return categories.find((item) => item.label === listing.category);
     }, [listing.category]);
+
     return (
         <Container>
             <div className="max-2-screen-lg mx-auto">
@@ -94,14 +92,16 @@ const ListingClient: React.FC<ListingClientProps> = ({
                             locationValue={listing.local}
                             horario={listing.horario}
                             data={listing.data}
+                            chavePix={listing.chavePix}
+                            grupo={listing.grupo}
                         />
                         <div
                             className="
-                                order-first
-                                mb-10
-                                md:order-last
-                                md: col-span-3
-                            "
+                  order-first
+                  mb-10
+                  md:order-last
+                  md: col-span-3
+              "
                         >
                             <ListingReservation
                                 preco={listing.preco}
@@ -115,7 +115,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 </div>
             </div>
         </Container>
-    )
-}
+    );
+};
 
-export default ListingClient
+export default ListingClient;
