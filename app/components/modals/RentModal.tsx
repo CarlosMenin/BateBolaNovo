@@ -37,6 +37,7 @@ const RentModal = () => {
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleDateChange = (date: Date) => {
     console.log("Selected Date:", date);
@@ -107,12 +108,18 @@ const RentModal = () => {
   }
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+
     if (step !== STEPS.PRICE) {
+      setIsSubmitting(false);
       return onNext();
     }
-    setIsLoading(true);
+    if (isSubmitting) {
+      return;
+    }
 
-    console.log("Data a ser enviada:", data.data);
+    setIsSubmitting(true);
+
+    setIsLoading(true);
 
     axios.post('/api/listings', data)
       .then(() => {

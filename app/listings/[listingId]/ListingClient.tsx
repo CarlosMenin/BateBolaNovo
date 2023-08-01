@@ -42,6 +42,12 @@ const ListingClient: React.FC<ListingClientProps> = ({
             return;
         }
 
+        const hasConfirmed = reservations.some(reservation => reservation.userId === currentUser.id);
+
+        if (hasConfirmed) {
+            toast.error("Você já confirmou sua presença para este evento.");
+            return;
+        }
         setIsLoading(true);
 
         axios
