@@ -62,8 +62,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
                 listing.numConfirmados = listing.numConfirmados + 1;
 
-                // Redirect to /trips
-                router.refresh();
+                router.push('/partidas');
             })
             .catch(() => {
                 toast.error("Algo deu errado");

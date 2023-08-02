@@ -1,19 +1,19 @@
 'use client';
 
 import useCountries from "@/app/hooks/useCountries";
-import { SafeListing, SafeUser } from "@/app/types";
+import { SafeListing, SafeReservations, SafeUser } from "@/app/types";
 import { Confirmacoes } from "@prisma/client"
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 import Image from "next/image";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
 
 
-interface ListingCardProps{
+interface ListingCardProps {
     data: SafeListing;
-    confirmation?: Confirmacoes;
+    confirmation?: SafeReservations;
     onAction?: (id: string) => void;
     disabled?: boolean;
     actionLabel?: string;
@@ -26,12 +26,12 @@ const ListingCard: React.FC<ListingCardProps> = ({
     confirmation,
     onAction,
     disabled,
-    actionId="",
+    actionId = "",
     actionLabel,
     currentUser
 }) => {
     const router = useRouter();
-    const {getByValue} = useCountries();
+    const { getByValue } = useCountries();
 
     const location = getByValue(data.local);
 
@@ -39,89 +39,89 @@ const ListingCard: React.FC<ListingCardProps> = ({
         (e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
 
-            if (disabled){
+            if (disabled) {
                 return;
             }
 
             onAction?.(actionId);
         },
-    [onAction,actionId,disabled]);
-    
-    const preco = useMemo(()=>{
-        if(confirmation){
+        [onAction, actionId, disabled]);
+
+    const preco = useMemo(() => {
+        if (confirmation) {
             return confirmation.preco;
         }
-        
-        return data.preco;
-    },[confirmation,data.preco]);
 
-    const confirmationDate = useMemo(()=>{
-        if(!confirmation){
+        return data.preco;
+    }, [confirmation, data.preco]);
+
+    const confirmationDate = useMemo(() => {
+        if (!confirmation) {
             return null;
         }
 
         const eventDate = new Date(confirmation.dataEvento);
 
-        return `${format(eventDate,'PP')}`
-    },[confirmation])
-  return (
-    <div
-        onClick={() => router.push(`/listings/${data.id}`)}
-        className="
+        return `${format(eventDate, 'PP')}`
+    }, [confirmation])
+    return (
+        <div
+            onClick={() => router.push(`/listings/${data.id}`)}
+            className="
             col-span-1 cursor-pointer group
         "
-    >
-        <div className="flex flex-col gap-2 w-full">
-            <div
-                className="
+        >
+            <div className="flex flex-col gap-2 w-full">
+                <div
+                    className="
                     aspect-square
                     w-full
                     relative
                     overflow-hidden
                     rounded-xl
                 "
-            >
-                <Image
-                    fill
-                    alt="Eventos"
-                    src={data.imageSrc}
-                    className="
+                >
+                    <Image
+                        fill
+                        alt="Eventos"
+                        src={data.imageSrc}
+                        className="
                         object-cover
                         h-full
                         w-full
                         group-hover:scale-110
                         transition
                     "
-                />
-                <div className="absolute top-3 right-3">
-                    <HeartButton 
-                        listingId={data.id}
-                        currentUser={currentUser}
-                />
+                    />
+                    <div className="absolute top-3 right-3">
+                        <HeartButton
+                            listingId={data.id}
+                            currentUser={currentUser}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="font-semibold text-lg">
-                {data.cidade}, {location?.label}
-            </div>
-            <div className="font-light text-neutral-800">
-                {data.category}, {format(data.data, 'dd/MM')}, {format(data.horario, 'HH:mm')}
-            </div>
-            <div className="flex flex-row items-center gap-1">
-                <div className="font-semibold">
-                    $ {preco}
+                <div className="font-semibold text-lg">
+                    {data.cidade}, {location?.label}
                 </div>
+                <div className="font-light text-neutral-800">
+                    {data.category}, {format(data.data, 'dd/MM')}, {format(data.horario, 'HH:mm')}
+                </div>
+                <div className="flex flex-row items-center gap-1">
+                    <div className="font-semibold">
+                        $ {preco}
+                    </div>
+                </div>
+                {onAction && actionLabel && (
+                    <Button
+                        disabled={disabled}
+                        small
+                        onClick={handleCancel}
+                        label={actionLabel}
+                    />
+                )}
             </div>
-            {onAction && actionLabel && (
-                <Button
-                    disabled={disabled}
-                    small
-                    onClick={handleCancel}
-                    label={actionLabel}
-                />
-            )}
         </div>
-    </div>
-  )
+    )
 }
 
 export default ListingCard
