@@ -24,11 +24,14 @@ const Search = () => {
                 <div className="text-sm font-semibold px-6">
                     Qualquer Lugar
                 </div>
-                <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">
-                    Qualquer Semana
+                <div className="hidden sm:block px-6 border-x-[1px] text-sm font-semibold px-6">
+                   Qualquer Dia
+                </div>
+                <div className="hidden sm:block text-sm text-gray-600 px-6 border-x-[1px] text-center"> 
+                    Nº Vagas
                 </div>
                 <div className="text-sm pl-6 pr-2 text-gray-600 flex flex-row items-center gap-3">
-                    <div className="hidden sm:block"> Adicionar Participantes</div>
+                    <div className="hidden sm:block"> Preço</div>
                     <div className="p-2 bg-purple-900 rounded-full text-white">
                         <BiSearch size={18} />
                     </div>

@@ -11,7 +11,10 @@ import qs from 'query-string';
 import { formatISO } from 'date-fns';
 import Heading from '../Heading';
 import Calendar from '../inputs/Calendar';
+import Counter from '../inputs/Counter';
+import { useForm, FieldValues} from "react-hook-form";
 import Input from '../inputs/Input';
+import { Ranchers } from 'next/font/google';
 
 enum STEPS {
     LOCATION = 0,
@@ -25,11 +28,28 @@ const SearchModal = () => {
     const searchModal = useSearchModal();
 
     const [location, setLocation] = useState<CountrySelectValue>();
+    const [guestCount, setguestCount] = useState(1);
     const [step, setStep] = useState(STEPS.LOCATION);
     const [dateRange, setDateRange] = useState<Range>({
         startDate: new Date(),
         endDate: new Date(),
         key: 'selection'
+    });
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: {
+          errors,
+        },
+        reset
+} = useForm<FieldValues>({
+    defaultValues: {
+    price:'1',
+    city:''
+    }
     });
 
     const Map = useMemo(() => dynamic(() => import('../Map'), {
@@ -49,6 +69,10 @@ const SearchModal = () => {
             return onNext();
         }
 
+        
+        const price = watch('price');
+        const city = watch('city');
+
         let currentQuery = {};
 
         if (params) {
@@ -57,7 +81,10 @@ const SearchModal = () => {
 
         const updatedQuery: any = {
             ...currentQuery,
-            locationValue: location?.value
+            locationValue: location?.value,
+            guestCount,
+            price,
+            city
         }
 
         if (dateRange.startDate) {
@@ -66,6 +93,7 @@ const SearchModal = () => {
 
         if (dateRange.endDate) {
             updatedQuery.endDate = formatISO(dateRange.endDate);
+
         }
 
         const url = qs.stringifyUrl({
@@ -116,7 +144,9 @@ const SearchModal = () => {
                 />
                 <Calendar
                     value={dateRange}
-                    onChange={(value) => setDateRange(value.selection)}
+                    onChange={(value) => setDateRange(value.selection)
+                    }
+
                 />
             </div>
         )
@@ -126,8 +156,31 @@ const SearchModal = () => {
         bodyContent = (
             <div className='flex flex-col gap-8'>
                 <Heading
-                    title='Mais detalhes'
-                    subtitle='Encontre o evento que melhor se encaixa para você'
+                    title='Nos conte mais!'
+                    subtitle='Nos forneça mais informações para limitar a sua busca'
+                />
+                <Counter
+                    title='Convidados'
+                    subtitle='Nos diga quantos amigos irão te acompanhar!'
+                    value={guestCount}
+                    onChange={(value) => setguestCount(value)}
+                />
+                <Input
+                    id="price"
+                    label="Preço máximo"
+                    formatPrice={true}
+                    type="number"
+                    register={register}
+                    errors={errors}
+                    required
+                />
+
+                <Input
+                id="city"
+                label="Cidade"
+                register={register}
+                errors={errors}
+                required
                 />
             </div>
         )
