@@ -14,6 +14,19 @@ const Home = async ({ searchParams }: HomeProps) => {
   const listings = await getListings(searchParams);
   const currentUser = await getCurrentUser();
 
+  // Sorting listings by date
+  const sortedListings = listings.sort((a, b) => {
+    const dateA = new Date(a.data);
+    const timeA = new Date(a.horario);
+    const dateTimeA = new Date(dateA.toDateString() + ' ' + timeA.toTimeString());
+
+    const dateB = new Date(b.data);
+    const timeB = new Date(b.horario);
+    const dateTimeB = new Date(dateB.toDateString() + ' ' + timeB.toTimeString());
+
+    return dateTimeA.getTime() - dateTimeB.getTime(); // Ascending order
+  });
+
   if (listings.length == 0) {
     return (
       <ClientOnly>
@@ -35,7 +48,14 @@ const Home = async ({ searchParams }: HomeProps) => {
           2xl:grid-cols-6
           gap-8
         ">
-          {listings.map((listing) => {
+          {sortedListings.map((listing) => {
+            //Pular eventos que já ocorreram
+            const eventDate = new Date(listing.data);
+            const currentDate = new Date();
+            if (eventDate < currentDate){
+              return null;
+            }
+            //Mostrar eventos ainda disponíveis
             return (
               <ListingCard
                 currentUser={currentUser}
