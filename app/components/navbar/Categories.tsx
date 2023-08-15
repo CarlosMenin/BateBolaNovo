@@ -3,7 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import CategoryBox from "../CategoryBox";
 import Container from "../Container";
-import {TbBallBasketball, TbBallBowling, TbBallFootball, TbBallTennis, TbBallVolleyball, TbBeach} from 'react-icons/tb'
+import {TbBallBasketball, TbBallBowling, TbBallFootball, TbBallTennis, TbBallVolleyball, TbSoccerField} from 'react-icons/tb'
 import { IoMdFootball } from "react-icons/io";
 
 export const categories = [
@@ -24,7 +24,7 @@ export const categories = [
     },
     {
         label: 'Futebol',
-        icon: TbBallFootball,
+        icon: IoMdFootball,
         description: "A modalidade deste evento é futebol"
     },
     {
@@ -39,7 +39,7 @@ export const categories = [
     },
     {
         label: 'Society',
-        icon: IoMdFootball,
+        icon: TbSoccerField,
         description: "A modalidade deste evento é society"
     },
 ]
