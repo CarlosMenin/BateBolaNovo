@@ -1,11 +1,14 @@
-'use client';
+import React, { useState } from 'react';
+import Button from '../Button';
+import Rating from '../Rating';
+import PaymentModal from '../modals/PaymentModal';
 
-import Button from "../Button";
-import Rating from "../Rating";
+
 interface ListingReservationProps {
     preco: number;
     numPessoas: number;
     numConfirmados: number;
+    chavePix: string;
     confirmed: string[];
     onSubmit: () => void;
     disabled: boolean;
@@ -15,25 +18,28 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
     preco,
     numPessoas,
     numConfirmados,
+    chavePix,
     confirmed,
     onSubmit,
     disabled
 }) => {
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
+    const togglePaymentModal = () => {
+        setShowPaymentModal(!showPaymentModal);
+    };
+
+    const handleConfirmPresence = () => {
+        if (preco > 0) {
+            togglePaymentModal();
+        } else {
+            onSubmit();
+        }
+    };
 
     return (
-        <div
-            className="
-                bg-white
-                rounded-xl
-                border-[1px]
-                border-neutral-200
-                overflow-hidden
-            "
-        >
-            <div className="
-                flex flex-row items-center gap-1 p-4    
-            ">
+        <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">
+            <div className="flex flex-row items-center gap-1 p-4">
                 <div className="text-2xl font-semibold">
                     $ {preco}
                 </div>
@@ -46,20 +52,12 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <Button
                     disabled={disabled}
                     label="Confirmar presença"
-                    onClick={onSubmit}
+                    onClick={handleConfirmPresence}
                 />
             </div>
-            <div className="
-                p-4
-                flex
-                flex-row
-                items-center
-                justify-between
-                font-semibold
-                text-lg
-            ">
+            <div className="p-4 flex flex-row items-center justify-between font-semibold text-lg">
                 <div>
-                     <Rating initialValue={3} onChange={(newRating) => console.log(newRating)} />
+                    <Rating initialValue={3} onChange={(newRating) => console.log(newRating)} />
                     Número de Participantes
                 </div>
                 <div>
@@ -76,8 +74,20 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                     ))}
                 </ul>
             </div>
-        </div>
-    )
-}
 
-export default ListingReservation
+            {showPaymentModal && (
+                <PaymentModal
+                    isOpen={showPaymentModal}
+                    onClose={togglePaymentModal}
+                    onConfirm={() => {
+                        togglePaymentModal();
+                        onSubmit();
+                    }}
+                    qrCodeValue={chavePix}
+                />
+            )}
+        </div>
+    );
+};
+
+export default ListingReservation;

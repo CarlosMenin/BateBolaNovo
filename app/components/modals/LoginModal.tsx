@@ -1,6 +1,6 @@
 'use client';
 
-import {signIn} from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import axios from 'axios';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
@@ -15,8 +15,6 @@ import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast'
 import Button from '../Button';
 import { useRouter } from 'next/navigation';
-
-
 
 
 const LoginModal = () => {
@@ -41,28 +39,28 @@ const LoginModal = () => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
 
-        signIn('credentials',{
+        signIn('credentials', {
             ...data,
             redirect: false,
         })
-        .then((callback) => {
-            setIsLoading(false);
+            .then((callback) => {
+                setIsLoading(false);
 
-            if(callback?.ok){
-                toast.success('Login realizado com sucesso');
-                router.refresh();
-                loginModal.onClose();
-            }
-            if(callback?.error){
-                toast.error(callback.error);
-            }
-        })
+                if (callback?.ok) {
+                    toast.success('Login realizado com sucesso');
+                    router.refresh();
+                    loginModal.onClose();
+                }
+                if (callback?.error) {
+                    toast.error(callback.error);
+                }
+            })
     };
 
     const toggle = useCallback(() => {
         loginModal.onClose();
         registerModal.onOpen();
-    },[loginModal,registerModal]);
+    }, [loginModal, registerModal]);
 
     const bodyContent = (
         <div className='flex flex-col gap-4'>

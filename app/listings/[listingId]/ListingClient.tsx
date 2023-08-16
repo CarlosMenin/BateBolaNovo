@@ -116,6 +116,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                                 preco={listing.preco}
                                 numPessoas={listing.numPessoas}
                                 numConfirmados={listing.numConfirmados}
+                                chavePix={listing.chavePix}
                                 confirmed={userNames}
                                 onSubmit={onCreateReservation}
                                 disabled={isLoading}

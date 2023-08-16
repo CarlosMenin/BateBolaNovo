@@ -12,7 +12,7 @@ import { formatISO } from 'date-fns';
 import Heading from '../Heading';
 import Calendar from '../inputs/Calendar';
 import Counter from '../inputs/Counter';
-import { useForm, FieldValues} from "react-hook-form";
+import { useForm, FieldValues } from "react-hook-form";
 import Input from '../inputs/Input';
 import { Ranchers } from 'next/font/google';
 
@@ -42,14 +42,14 @@ const SearchModal = () => {
         setValue,
         watch,
         formState: {
-          errors,
+            errors,
         },
         reset
-} = useForm<FieldValues>({
-    defaultValues: {
-    price:'1',
-    city:''
-    }
+    } = useForm<FieldValues>({
+        defaultValues: {
+            price: '1',
+            city: ''
+        }
     });
 
     const Map = useMemo(() => dynamic(() => import('../Map'), {
@@ -69,7 +69,7 @@ const SearchModal = () => {
             return onNext();
         }
 
-        
+
         const price = watch('price');
         const city = watch('city');
 
@@ -104,7 +104,7 @@ const SearchModal = () => {
         setStep(STEPS.LOCATION);
         searchModal.onClose();
         router.push(url);
-    }, [dateRange.endDate, dateRange.startDate, location?.value, onNext, params, router, searchModal, step]);
+    }, [dateRange.endDate, dateRange.startDate, guestCount, location?.value, onNext, params, router, searchModal, step, watch]);
 
     const actionLabel = useMemo(() => {
         if (step == STEPS.INFO) {
@@ -176,11 +176,11 @@ const SearchModal = () => {
                 />
 
                 <Input
-                id="city"
-                label="Cidade"
-                register={register}
-                errors={errors}
-                required
+                    id="city"
+                    label="Cidade"
+                    register={register}
+                    errors={errors}
+                    required
                 />
             </div>
         )
