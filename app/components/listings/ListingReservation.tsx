@@ -38,7 +38,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                     $ {preco}
                 </div>
                 <div className="font-light text-neutral-600">
-                    person
+                    pessoa
                 </div>
             </div>
             <hr />
@@ -69,8 +69,10 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <div className="font-semibold text-lg">
                     Participantes Confirmados:
                 </div>
-                <ul>
-                    {confirmed}
+                <ul className="font-semibold text-lg">
+                    {confirmed.map((name, index) => (
+                        <li key={index}>{index + 1}. {name}</li>
+                    ))}
                 </ul>
             </div>
         </div>
