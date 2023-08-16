@@ -11,9 +11,9 @@ export async function POST(request: Request) {
 
   const body = await request.json();
 
-  const { listingid, eventDate, eventTime, price } = body;
+  const { listingid, eventDate, eventTime, price, name } = body;
 
-  if (!listingid || !eventDate || !eventTime || !price) {
+  if (!listingid || !eventDate || !eventTime || !price || !name ) {
     return new NextResponse("Missing required fields.", { status: 400 });
   }
 
@@ -29,6 +29,7 @@ export async function POST(request: Request) {
           preco: price,
           dataEvento: eventDate,
           horarioEvento: eventTime,
+          userName : name
         },
       },
       // Incrementar o número de confirmados em 1

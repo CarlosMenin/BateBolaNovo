@@ -56,6 +56,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 listingid: listing?.id,
                 eventDate: listing.data,
                 eventTime: listing.horario,
+                name: currentUser.name,
             })
             .then(() => {
                 toast.success("Presença confirmada");
@@ -70,11 +71,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [currentUser, listing, loginModal, router]);
+    }, [currentUser, listing, loginModal, reservations, router]);
 
     const category = useMemo(() => {
         return categories.find((item) => item.label === listing.category);
     }, [listing.category]);
+
+    const userNames = reservations.map(reservation => reservation.userName ?? "Nome Desconhecido");
+
 
     return (
         <Container>
@@ -112,6 +116,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                                 preco={listing.preco}
                                 numPessoas={listing.numPessoas}
                                 numConfirmados={listing.numConfirmados}
+                                confirmed={userNames}
                                 onSubmit={onCreateReservation}
                                 disabled={isLoading}
                             />

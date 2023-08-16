@@ -73,6 +73,7 @@ model Confirmacoes {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   userId        String   @db.ObjectId
   eventosId     String   @db.ObjectId
+  userName      String
   dataEvento    DateTime
   horarioEvento DateTime
   preco         Int

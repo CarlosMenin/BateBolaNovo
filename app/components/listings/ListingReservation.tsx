@@ -6,6 +6,7 @@ interface ListingReservationProps {
     preco: number;
     numPessoas: number;
     numConfirmados: number;
+    confirmed: string[];
     onSubmit: () => void;
     disabled: boolean;
 }
@@ -14,9 +15,12 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
     preco,
     numPessoas,
     numConfirmados,
+    confirmed,
     onSubmit,
     disabled
 }) => {
+
+
     return (
         <div
             className="
@@ -60,6 +64,14 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <div>
                     {numConfirmados}/{numPessoas}
                 </div>
+            </div>
+            <div className="p-4">
+                <div className="font-semibold text-lg">
+                    Participantes Confirmados:
+                </div>
+                <ul>
+                    {confirmed}
+                </ul>
             </div>
         </div>
     )
