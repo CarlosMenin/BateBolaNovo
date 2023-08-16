@@ -58,17 +58,21 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             >
                 {reservations.map((reservation) => (
                     <div key={reservation.id}>
-                        Nome do Usuário: {reservation.userName} {/* Adiciona o texto */}
-                        <ListingCard
-                            key={reservation.id}
-                            data={reservation.eventos}
-                            confirmation={reservation}
-                            actionId={reservation.id}
-                            onAction={onCancel}
-                            disabled={deletingId === reservation.id}
-                            actionLabel="Cancelar participação do usuário"
-                            currentUser={currentUser}
-                        />
+                        {currentUser && reservation.userId !== currentUser.id && (
+                            <div>
+                                Nome do Usuário: {reservation.userName}
+                                <ListingCard
+                                    key={reservation.id}
+                                    data={reservation.eventos}
+                                    confirmation={reservation}
+                                    actionId={reservation.id}
+                                    onAction={onCancel}
+                                    disabled={deletingId === reservation.id}
+                                    actionLabel="Cancelar participação do usuário"
+                                    currentUser={currentUser}
+                                />
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
