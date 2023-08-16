@@ -1,7 +1,7 @@
 'use client';
 
 import Button from "../Button";
-
+import Rating from "../Rating";
 interface ListingReservationProps {
     preco: number;
     numPessoas: number;
@@ -59,6 +59,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 text-lg
             ">
                 <div>
+                     <Rating initialValue={3} onChange={(newRating) => console.log(newRating)} />
                     Número de Participantes
                 </div>
                 <div>
