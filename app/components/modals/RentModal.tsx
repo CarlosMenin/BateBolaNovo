@@ -64,11 +64,11 @@ const RentModal = () => {
 
   const handleCategorySelect = (selectedCategory: string) => {
     setCustomValue('category', selectedCategory);
-  
+
     if (!imageSrc) {
-        // Se nenhuma imagem foi definida pelo usuário, uma imagem padrão baseada na categoria é selecionada
-        const defaultImagePath = `/images/${selectedCategory.toLowerCase()}.jpg`;
-        setCustomValue('imageSrc', defaultImagePath);
+      // Se nenhuma imagem foi definida pelo usuário, uma imagem padrão baseada na categoria é selecionada
+      const defaultImagePath = `/images/${selectedCategory.toLowerCase()}.jpg`;
+      setCustomValue('imageSrc', defaultImagePath);
     }
   };
 
@@ -100,6 +100,7 @@ const RentModal = () => {
       location: null,
       numPessoas: 1,
       numConfirmados: 0,
+      numOcorreu: 0,
       imageSrc: '',
       preco: 1,
       title: '',

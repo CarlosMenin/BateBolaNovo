@@ -26,7 +26,7 @@ export async function POST(
         horario,
         cidade,
         numConfirmados,
-        chavePix,
+        numOcorreu,
         grupo,
     } = body;
 
@@ -45,6 +45,7 @@ export async function POST(
             endereco,
             cidade,
             numConfirmados,
+            numOcorreu,
             chavePix: currentUser.chavePix || '',
             grupo
         }

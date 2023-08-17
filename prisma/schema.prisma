@@ -61,6 +61,7 @@ model Eventos {
   grupo          String
   numPessoas     Int
   numConfirmados Int
+  numOcorreu     Int
   data           DateTime
   horario        DateTime
   preco          Int

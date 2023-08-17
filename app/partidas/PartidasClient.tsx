@@ -41,6 +41,29 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
             })
     }, [router]);
 
+    const markEventNotOccurred = (reservationId: string) => {
+        axios.post(`/api/ocorreu/${reservationId}`)
+            .then(() => {
+                toast.success("Evento marcado como não ocorrido");
+                router.refresh();
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.error);
+            });
+    };
+
+    const markEventOccurred = (reservationId: string) => {
+        console.log(reservationId)
+        axios.post(`/api/nao_ocorreu/${reservationId}`)
+            .then(() => {
+                toast.success("Evento marcado como ocorrido");
+                router.refresh();
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.error);
+            });
+    };
+
     return (
         <Container>
             <Heading
@@ -69,18 +92,35 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                 '
             >
                 {reservations
-                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
+                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) > currentDate : new Date(reservation.eventos.data) >= currentDate))
                     .map((reservation) => (
-                        <ListingCard
-                            key={reservation.id}
-                            data={reservation.eventos}
-                            confirmation={reservation}
-                            actionId={reservation.id}
-                            onAction={onCancel}
-                            disabled={deletingId === reservation.id}
-                            actionLabel='Cancelar presença no evento'
-                            currentUser={currentUser}
-                        />
+                        <div key={reservation.id} className="relative">
+                            <ListingCard
+                                data={reservation.eventos}
+                                confirmation={reservation}
+                                actionId={reservation.id}
+                                onAction={onCancel}
+                                disabled={deletingId === reservation.id}
+                                currentUser={currentUser}
+                                actionLabel={showPastEvents ? undefined : 'Cancelar presença no evento'}
+                            />
+                            {showPastEvents && (
+                                <div className="mt-2 ml-4 flex justify-start space-x-4">
+                                    <button
+                                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                        onClick={() => markEventNotOccurred(reservation.id)}
+                                    >
+                                        Não Ocorreu
+                                    </button>
+                                    <button
+                                        className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                                        onClick={() => markEventOccurred(reservation.id)}
+                                    >
+                                        Ocorreu
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     ))}
             </div>
         </Container>
