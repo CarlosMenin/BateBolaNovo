@@ -88,10 +88,6 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
                 Endereço: {endereco}
             </div>
             <hr />
-            <div className="text-lg font-semibold text-neutral-800">
-                Chave Pix: {chavePix}
-            </div>
-            <hr />
             <div className="text-lg font-light text-neutral-800">
                 Grupo do evento: {grupo}
             </div>
