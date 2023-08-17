@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FieldErrors, FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
 
@@ -34,7 +34,18 @@ enum STEPS {
 const RentModal = () => {
   const router = useRouter();
   const rentModal = useRentModal();
-  const currentUser = getCurrentUser();
+  const [currentUser, setCurrentUser] = useState<{
+    chavePix: string | null;
+  } | null>(null);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+    }
+
+    fetchUserData();
+  }, []);
 
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +90,7 @@ const RentModal = () => {
       cidade: '',
       data: selectedDate.toISOString(),
       horario: selectedTime.toISOString(),
-      chavePix: currentUser.chavePix,
+      chavePix: currentUser?.chavePix || '',
       grupo: '',
     }
   });
