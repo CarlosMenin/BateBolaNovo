@@ -57,6 +57,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 eventDate: listing.data,
                 eventTime: listing.horario,
                 name: currentUser.name,
+                hasPaid: false,
             })
             .then(() => {
                 toast.success("Presença confirmada");

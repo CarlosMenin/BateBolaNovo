@@ -17,6 +17,7 @@ model User {
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
+  chavePix       String?
   isArena        Boolean?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -73,6 +74,7 @@ model Confirmacoes {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   userId        String   @db.ObjectId
   eventosId     String   @db.ObjectId
+  hasPaid       Boolean?
   userName      String
   dataEvento    DateTime
   horarioEvento DateTime

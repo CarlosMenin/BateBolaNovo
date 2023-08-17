@@ -20,6 +20,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import TimeInput from "../inputs/TimeInput";
 import DataInput from "../inputs/DataInput";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 enum STEPS {
   CATEGORY = 0,
@@ -33,6 +34,7 @@ enum STEPS {
 const RentModal = () => {
   const router = useRouter();
   const rentModal = useRentModal();
+  const currentUser = getCurrentUser();
 
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +79,7 @@ const RentModal = () => {
       cidade: '',
       data: selectedDate.toISOString(),
       horario: selectedTime.toISOString(),
-      chavePix: '',
+      chavePix: currentUser.chavePix,
       grupo: '',
     }
   });
@@ -281,15 +283,6 @@ const RentModal = () => {
         <Input
           id="endereco"
           label="Endereço do local"
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
-        <hr />
-        <Input
-          id="chavePix"
-          label="Chave Pix do evento"
           disabled={isLoading}
           register={register}
           errors={errors}
