@@ -96,10 +96,8 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                     .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
                     .map((reservation) => {
                         const reservationId = reservation.id;
-
                         return (
                             <div key={reservation.id} className="relative">
-                                {reservationId}
                                 <ListingCard
                                     data={reservation.eventos}
                                     confirmation={reservation}
