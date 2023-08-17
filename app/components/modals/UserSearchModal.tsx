@@ -32,7 +32,7 @@ const userSearchModal = () => {
 
   const onSubmit = useCallback(async () => {
     
-    const price = watch("name");
+    const name = watch("name");
 
     let currentQuery = {};
 
@@ -63,7 +63,7 @@ const userSearchModal = () => {
     <div className="flex flex-col gap-8">
       <Heading title="Buscar Usuários" subtitle="Efetue uma busca por jogadores" />
       <Input
-        id="nome"
+        id="name"
         label="Nome"
         register={register}
         errors={errors}
