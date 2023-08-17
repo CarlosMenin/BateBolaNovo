@@ -45,7 +45,7 @@ export async function POST(
             endereco,
             cidade,
             numConfirmados,
-            chavePix,
+            chavePix: currentUser.chavePix || '',
             grupo
         }
     });

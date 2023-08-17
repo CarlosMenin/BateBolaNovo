@@ -38,7 +38,7 @@ const isFutureDate = (date: Date) => {
 const isFutureTime = (time: Date, selectedDate: Date) => {
   const now = new Date();
   if (selectedDate.toDateString() === now.toDateString()) {
-      return time.getTime() > now.getTime();
+    return time.getTime() > now.getTime();
   }
   return true;
 };
@@ -98,7 +98,6 @@ const RentModal = () => {
       cidade: '',
       data: selectedDate.toISOString(),
       horario: selectedTime.toISOString(),
-      chavePix: '',
       grupo: '',
     }
   });
@@ -302,15 +301,6 @@ const RentModal = () => {
         <Input
           id="endereco"
           label="Endereço do local"
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        />
-        <hr />
-        <Input
-          id="chavePix"
-          label="Chave Pix do evento"
           disabled={isLoading}
           register={register}
           errors={errors}
