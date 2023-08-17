@@ -17,51 +17,34 @@ const userSearchModal = () => {
 
   const [name, setName] = useState<string>();
 
-      const {
-        register,
-        handleSubmit,
-        setValue,
-        watch,
-        formState: { errors },
-        reset,
-      } = useForm<FieldValues>({
-        defaultValues: {
-          name: "",
-        },
-      });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: "",
+    },
+  });
 
   const onSubmit = useCallback(async () => {
-    
     const name = watch("name");
 
-    let currentQuery = {};
-
-    if (params) {
-      currentQuery = qs.parse(params.toString())
-    }
-
-    const updatedQuery: any = {
-      ...currentQuery,
-      name
-    }
-
-    const url = qs.stringifyUrl({
-      url: '/',
-      query: updatedQuery
-    }, { skipNull: true });
-
     userSearchModal.onClose();
-    router.push(url);
-  }, [
-    userSearchModal,
-    router,
-    name,
-    params
-  ])
+    if (name) {
+      router.push(`/users/${name}`);
+    }
+  }, [userSearchModal, router, name, params]);
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
-      <Heading title="Buscar Usuários" subtitle="Efetue uma busca por jogadores" />
+      <Heading
+        title="Buscar Usuários"
+        subtitle="Efetue uma busca por jogadores"
+      />
       <Input
         id="name"
         label="Nome"
