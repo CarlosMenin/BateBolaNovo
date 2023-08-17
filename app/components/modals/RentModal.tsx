@@ -62,6 +62,16 @@ const RentModal = () => {
     setValue('data', date.toISOString()); // Update the form's 'data' field with the new value
   };
 
+  const handleCategorySelect = (selectedCategory: string) => {
+    setCustomValue('category', selectedCategory);
+  
+    if (!imageSrc) {
+        // Se nenhuma imagem foi definida pelo usuário, uma imagem padrão baseada na categoria é selecionada
+        const defaultImagePath = `/images/${selectedCategory.toLowerCase()}.jpg`;
+        setCustomValue('imageSrc', defaultImagePath);
+    }
+  };
+
 
 
   const [selectedTime, setSelectedTime] = useState(new Date());
@@ -191,7 +201,7 @@ const RentModal = () => {
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
-              onClick={(category) => setCustomValue('category', category)}
+              onClick={handleCategorySelect}
               selected={category === item.label}
               label={item.label}
               icon={item.icon}
