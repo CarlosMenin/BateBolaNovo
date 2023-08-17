@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FieldErrors, FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
 
@@ -20,7 +20,6 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import TimeInput from "../inputs/TimeInput";
 import DataInput from "../inputs/DataInput";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 
 enum STEPS {
   CATEGORY = 0,
@@ -34,18 +33,6 @@ enum STEPS {
 const RentModal = () => {
   const router = useRouter();
   const rentModal = useRentModal();
-  const [currentUser, setCurrentUser] = useState<{
-    chavePix: string | null;
-  } | null>(null);
-
-  useEffect(() => {
-    async function fetchUserData() {
-      const user = await getCurrentUser();
-      setCurrentUser(user);
-    }
-
-    fetchUserData();
-  }, []);
 
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +77,7 @@ const RentModal = () => {
       cidade: '',
       data: selectedDate.toISOString(),
       horario: selectedTime.toISOString(),
-      chavePix: currentUser?.chavePix || '',
+      chavePix: '',
       grupo: '',
     }
   });
@@ -294,6 +281,15 @@ const RentModal = () => {
         <Input
           id="endereco"
           label="Endereço do local"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="chavePix"
+          label="Chave Pix do evento"
           disabled={isLoading}
           register={register}
           errors={errors}
