@@ -8,7 +8,7 @@ import HeartButton from "../HeartButton";
 
 interface ListingHeadProps{
     title: string;
-    locationValue:string;
+    locationValue?:string;
     imageSrc: string;
     id: string;
     currentUser?: SafeUser | null;

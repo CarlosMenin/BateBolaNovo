@@ -1,9 +1,10 @@
 import prisma from '@/app/libs/prismadb'
 import { Range } from "react-date-range";
 import { formatISO } from 'date-fns';
+import { Url } from 'next/dist/shared/lib/router/router';
 
 export interface IUserParams {
-    name?: string
+    name?: string;
 }
 
 export default async function getUsers(
@@ -11,8 +12,10 @@ export default async function getUsers(
 ){
     try{
         const {
-        name
+        name: encodedName
         } = params;
+
+        const name = decodeURIComponent(encodedName || '');
 
         const user = await prisma.user.findFirst({
             where: {

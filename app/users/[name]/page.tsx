@@ -11,7 +11,7 @@ const UserPage = async ({ params }: { params: IParams }) => {
     return <div>Bah</div>;
 }
     
-  return <div>{user?.name}</div>;
+  return (<div>{user?.email}</div>);
 };
 
 export default UserPage;
