@@ -30,6 +30,19 @@ enum STEPS {
   PRICE = 5,
 }
 
+const isFutureDate = (date: Date) => {
+  const now = new Date();
+  return date > now;
+};
+
+const isFutureTime = (time: Date, selectedDate: Date) => {
+  const now = new Date();
+  if (selectedDate.toDateString() === now.toDateString()) {
+      return time.getTime() > now.getTime();
+  }
+  return true;
+};
+
 const RentModal = () => {
   const router = useRouter();
   const rentModal = useRentModal();
@@ -41,6 +54,10 @@ const RentModal = () => {
 
   const handleDateChange = (date: Date) => {
     console.log("Selected Date:", date);
+    if (!isFutureDate(date)) {
+      toast.error("Seu evento deve estar no futuro!");
+      return;
+    }
     setSelectedDate(date);
     setValue('data', date.toISOString()); // Update the form's 'data' field with the new value
   };
@@ -50,6 +67,10 @@ const RentModal = () => {
   const [selectedTime, setSelectedTime] = useState(new Date());
 
   const handleTimeChange = (time: Date) => {
+    if (!isFutureTime(time, selectedDate)) {
+      toast.error("Seu evento deve estar no futuro!");
+      return;
+    }
     setSelectedTime(time);
     setValue('horario', time.toISOString()); // Update the form's 'horario' field with the new value
   };
