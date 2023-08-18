@@ -12,6 +12,18 @@ import Button from '../Button';
 import { signIn } from 'next-auth/react';
 import useLoginModal from '@/app/hooks/useLoginModal';
 
+function calculateAge(birthDate: string): number {
+    const dob = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDifference = today.getMonth() - dob.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
@@ -31,6 +43,7 @@ const RegisterModal = () => {
         defaultValues: {
             name: '',
             email: '',
+            birthDate: '',
             password: '',
             chavePix: '',
             isArena: false
@@ -41,6 +54,13 @@ const RegisterModal = () => {
         setIsLoading(true);
 
         data.isArena = isArenaUser;
+
+        const age = calculateAge(data.birthDate);
+        if (age < 18 || age > 100) {
+            toast.error('Idade fora da faixa permitida');
+            setIsLoading(false);
+            return;
+        }
 
         axios.post('/api/register', data)
             .then(() => {
@@ -83,6 +103,16 @@ const RegisterModal = () => {
                 errors={errors}
                 required
             />
+            <Input
+                id="birthDate"
+                type="date"
+                label="Data de Nascimento"
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                required
+            />
+
             <Input
                 id="chavePix"
                 label="Chave Pix"
