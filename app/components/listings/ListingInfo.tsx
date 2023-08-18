@@ -39,7 +39,6 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
     endereco,
     horario,
     data,
-    chavePix,
     grupo,
 }) => {
     const { getByValue } = useCountries();

@@ -4,11 +4,12 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 
 interface IRequestData {
     reservationId: string;
+    rating: number;
 }
 
 export async function POST(request: Request) {
     try {
-        const { reservationId } = await request.json() as IRequestData;
+        const { reservationId, rating } = await request.json() as IRequestData;
 
         if (!reservationId || typeof reservationId !== "string") {
             throw new Error('Invalid Reservation ID');
@@ -35,12 +36,10 @@ export async function POST(request: Request) {
             return NextResponse.error();
         }
 
-        // Check authorization logic...
-        if (event.userId !== currentUser.id) {
+        if (reservation.userId !== currentUser.id) {
             return new NextResponse("Unauthorized.", { status: 403 });
         }
 
-        // Update event data...
         await prisma.eventos.update({
             where: {
                 id: event.id,
@@ -50,6 +49,27 @@ export async function POST(request: Request) {
                     decrement: 1,
                 },
             },
+        });
+
+        const eventUser = await prisma.user.findUnique({
+            where: {
+                id: event.userId,
+            },
+        });
+
+        const lastRating = (eventUser?.rating ?? 0) * (eventUser?.numAvaliacoes ?? 0);
+        const newRating = (lastRating + rating)/((eventUser?.numAvaliacoes ?? 0)+1);
+
+        await prisma.user.update({
+            where: {
+                id: event.userId,
+            },
+            data:{
+                numAvaliacoes: {
+                    increment: 1,
+                },
+                rating: newRating
+            }
         });
 
         return NextResponse.json(event);

@@ -19,7 +19,7 @@ model User {
   hashedPassword String?
   chavePix       String?
   isArena        Boolean?
-  rating         Int?
+  rating         Float?
   numCreated     Int?
   numAvaliacoes  Int?
   createdAt      DateTime  @default(now())

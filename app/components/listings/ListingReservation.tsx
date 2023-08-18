@@ -57,7 +57,6 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
             </div>
             <div className="p-4 flex flex-row items-center justify-between font-semibold text-lg">
                 <div>
-                    <Rating initialValue={3} onChange={(newRating) => console.log(newRating)} />
                     Número de Participantes
                 </div>
                 <div>

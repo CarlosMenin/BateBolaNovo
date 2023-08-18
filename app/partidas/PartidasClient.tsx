@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import ListingCard from '../components/listings/ListingCard';
+import Rating from '../components/Rating';
 
 interface PartidasClientProps {
     reservations: SafeReservations[];
@@ -22,6 +23,8 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
     const router = useRouter();
     const [deletingId, setDeletingId] = useState('');
     const [showPastEvents, setShowPastEvents] = useState(false);
+    const [selectedRating, setSelectedRating] = useState(3);
+
 
     const currentDate = new Date();
 
@@ -43,7 +46,7 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
 
     const handleMarkEventNotOccurred = useCallback((reservationId: string) => {
         console.log(typeof reservationId)
-        axios.post('/api/nao_ocorreu', { reservationId })
+        axios.post('/api/nao_ocorreu', { reservationId, rating: selectedRating })
             .then(() => {
                 toast.success("Evento marcado como não ocorrido");
                 router.refresh();
@@ -51,11 +54,11 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
             .catch((error) => {
                 toast.error(error?.response?.data?.error);
             })
-    }, [router]);
+    }, [router, selectedRating]);
 
     const handleMarkEventOccurred = useCallback((reservationId: string) => {
         console.log(typeof reservationId)
-        axios.post('/api/ocorreu', { reservationId })
+        axios.post('/api/ocorreu', { reservationId, rating: selectedRating })
             .then(() => {
                 toast.success("Evento marcado como ocorrido");
                 router.refresh();
@@ -63,7 +66,7 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
             .catch((error) => {
                 toast.error(error?.response?.data?.error);
             })
-    }, [router]);
+    }, [router, selectedRating]);
 
     return (
         <Container>
@@ -93,7 +96,7 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                 '
             >
                 {reservations
-                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) > currentDate : new Date(reservation.eventos.data) >= currentDate))
+                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
                     .map((reservation) => {
                         const reservationId = reservation.id;
                         return (
@@ -107,6 +110,14 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                                     currentUser={currentUser}
                                     actionLabel={showPastEvents ? undefined : 'Cancelar presença no evento'}
                                 />
+                                {showPastEvents && (
+                                    <div>
+                                        <Rating
+                                            initialValue={3}
+                                            onChange={(newRating) => setSelectedRating(newRating)}
+                                        />
+                                    </div>
+                                )}
                                 {showPastEvents && (
                                     <div className="mt-2 ml-4 flex justify-start space-x-4">
                                         <button
