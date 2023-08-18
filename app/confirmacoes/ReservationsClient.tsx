@@ -37,6 +37,9 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
                 setDeletingId('');
             })
     }, [router]);
+
+    const currentDate = new Date();
+
     return (
         <Container>
             <Heading
@@ -56,25 +59,27 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
                     gap-8
                 "
             >
-                {reservations.map((reservation) => (
-                    <div key={reservation.id}>
-                        {currentUser && reservation.userId !== currentUser.id && (
-                            <div>
-                                Nome do Usuário: {reservation.userName}
-                                <ListingCard
-                                    key={reservation.id}
-                                    data={reservation.eventos}
-                                    confirmation={reservation}
-                                    actionId={reservation.id}
-                                    onAction={onCancel}
-                                    disabled={deletingId === reservation.id}
-                                    actionLabel="Cancelar participação do usuário"
-                                    currentUser={currentUser}
-                                />
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {reservations
+                    .filter(reservation => (!currentUser || reservation.userId !== currentUser.id) && new Date(reservation.eventos.data) >= currentDate)
+                    .map((reservation) => (
+                        <div key={reservation.id}>
+                            {currentUser && (
+                                <div>
+                                    Nome do Usuário: {reservation.userName}
+                                    <ListingCard
+                                        key={reservation.id}
+                                        data={reservation.eventos}
+                                        confirmation={reservation}
+                                        actionId={reservation.id}
+                                        onAction={onCancel}
+                                        disabled={deletingId === reservation.id}
+                                        actionLabel="Cancelar participação do usuário"
+                                        currentUser={currentUser}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    ))}
             </div>
         </Container>
     )

@@ -110,8 +110,8 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                                     currentUser={currentUser}
                                     actionLabel={showPastEvents ? undefined : 'Cancelar presença no evento'}
                                 />
-                                {showPastEvents && (
-                                    <div>
+                                {showPastEvents && !reservation.hasPaid && (
+                                    <div className="mt-2">
                                         <Rating
                                             initialValue={3}
                                             onChange={(newRating) => setSelectedRating(newRating)}
@@ -119,24 +119,35 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                                     </div>
                                 )}
                                 {showPastEvents && (
-                                    <div className="mt-2 ml-4 flex justify-start space-x-4">
-                                        <button
-                                            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-                                            onClick={() => {
-                                                handleMarkEventNotOccurred(reservationId);
-                                            }}
-                                        >
-
-                                            Não Ocorreu
-                                        </button>
-                                        <button
-                                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                                            onClick={() => {
-                                                handleMarkEventOccurred(reservationId);
-                                            }}
-                                        >
-                                            Ocorreu
-                                        </button>
+                                    <div className="mt-2 ml-4 space-x-4">
+                                        {!reservation.hasPaid && (
+                                            <>
+                                                <button
+                                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                                    onClick={() => {
+                                                        handleMarkEventNotOccurred(reservationId);
+                                                    }}
+                                                >
+                                                    Não Ocorreu
+                                                </button>
+                                                <button
+                                                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                                                    onClick={() => {
+                                                        handleMarkEventOccurred(reservationId);
+                                                    }}
+                                                >
+                                                    Ocorreu
+                                                </button>
+                                            </>
+                                        )}
+                                        {reservation.hasPaid && (
+                                            <button
+                                                className="px-6 py-2 bg-purple-800 text-white rounded-md"
+                                                style={{ minWidth: '200px' }}
+                                            >
+                                                {reservation.eventos.numOcorreu} / {reservation.eventos.numPessoas}
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                             </div>

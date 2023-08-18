@@ -28,7 +28,7 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <UserInfo
               user={user}
-              isArena={user.isArena}
+              isArena={user.isArena || false}
               TipoUsuario={"Normal"}
             />
             <div

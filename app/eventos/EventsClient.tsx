@@ -37,6 +37,9 @@ const EventsClient: React.FC<EventsClientProps> = ({
                 setDeletingId('');
             })
     }, [router]);
+
+    const currentDate = new Date();
+
     return (
         <Container>
             <Heading
@@ -56,17 +59,19 @@ const EventsClient: React.FC<EventsClientProps> = ({
                     gap-8
                 "
             >
-                {listings.map((listing) => (
-                    <ListingCard
-                        key={listing.id}
-                        data={listing}
-                        actionId={listing.id}
-                        onAction={onCancel}
-                        disabled={deletingId === listing.id}
-                        actionLabel="Cancelar evento"
-                        currentUser={currentUser}
-                    />
-                ))}
+                {listings
+                    .filter(listing => new Date(listing.data) >= currentDate)
+                    .map((listing) => (
+                        <ListingCard
+                            key={listing.id}
+                            data={listing}
+                            actionId={listing.id}
+                            onAction={onCancel}
+                            disabled={deletingId === listing.id}
+                            actionLabel="Cancelar evento"
+                            currentUser={currentUser}
+                        />
+                    ))}
             </div>
         </Container>
     )

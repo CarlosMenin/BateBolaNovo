@@ -27,6 +27,16 @@ export async function POST(request: Request) {
         if (!reservation) {
             return new NextResponse("Reservation not found.", { status: 404 });
         }
+        else{
+            await prisma.confirmacoes.update({
+                where: {
+                    id: reservation.id,
+                },
+                data: {
+                    hasPaid: true,
+                },
+            });
+        }
 
         const event = reservation.eventos;
 

@@ -14,6 +14,9 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
     listings,
     currentUser
 }) => {
+
+    const currentDate = new Date();
+
     return (
         <Container>
             <Heading
@@ -33,13 +36,15 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
                     gap-8
                 "
             >
-                {listings.map((listing) =>
-                    <ListingCard
-                        currentUser={currentUser}
-                        key={listing.id}
-                        data={listing}
-                    />
-                )}
+                {listings
+                    .filter(listing => new Date(listing.data) >= currentDate)
+                    .map((listing) => (
+                        <ListingCard
+                            currentUser={currentUser}
+                            key={listing.id}
+                            data={listing}
+                        />
+                    ))}
             </div>
         </Container>
     )

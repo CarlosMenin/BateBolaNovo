@@ -17,8 +17,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
     TipoUsuario
 }) => {
 
-    if(isArena)
-    {
+    if (isArena) {
         TipoUsuario = "Arena"
     }
 
@@ -45,9 +44,9 @@ const UserInfo: React.FC<UserInfoProps> = ({
                 </div>
             </div>
             <hr />
-                <div className="text-lg font-semibold text-neutral-800">
-                    Usuário {TipoUsuario}
-                </div>
+            <div className="text-lg font-semibold text-neutral-800">
+                Usuário {TipoUsuario}
+            </div>
             <hr />
             <div className="text-lg font-semibold text-neutral-800">
                 Eventos Criados: {user?.numCreated}
