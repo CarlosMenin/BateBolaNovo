@@ -74,6 +74,8 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
     }
   }, [router, currentUser, user]);
 
+  const isFriend = currentUser?.friends.includes(user.id);
+  const isBlock = currentUser?.blockedUsers.includes(user.id);
 
   return (
     <Container>
@@ -83,16 +85,15 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
             name={user.name || ''}
             imageSrc={user.image || ''}
           />
-          <Button
-            label="Adicionar como Amigo"
-            onClick={addFriend}
-          />
+
+         
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <UserInfo
               user={user}
               isArena={user.isArena || false}
               TipoUsuario={"Normal"}
             />
+           
             <div
               className="
                   order-first
@@ -100,7 +101,35 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
                   md:order-last
                   md: col-span-3
               "
-            ></div>
+            >
+              <div className="mt-7">
+              {isFriend ? (
+                <Button
+                    label="Remover Amigo"
+                    onClick={removeFriend}
+                    />
+              ) : (
+              
+                <Button
+                  label="Adicionar como Amigo"
+                  onClick={addFriend}
+                />
+              )}
+              </div>
+              <div className="mt-7">
+                {isBlock ? (
+                  <Button
+                      label="Desbloquear Usuário"
+                      onClick={unblockUser}
+                      />
+                ) : (
+                <Button
+                  label="Bloquear Usuário"
+                  onClick={blockUser}
+                />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
