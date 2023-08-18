@@ -6,7 +6,8 @@ import UserInfo from "@/app/components/listings/UserInfo";
 import { SafeUser } from "@/app/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import Button from "../components/Button";
+import { useCallback } from "react";
 import toast from "react-hot-toast";
 
 interface ListingUserProps {
@@ -17,6 +18,63 @@ interface ListingUserProps {
 const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
   const router = useRouter();
 
+  const addFriend = useCallback(() => {
+    const userId = user.id;
+    if (currentUser) {
+      axios.post('/api/adicionar', { currentUserId: currentUser.id, userId })
+        .then(() => {
+          toast.success("Amigo adicionado");
+          router.refresh();
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.error);
+        });
+    }
+  }, [router, currentUser, user]);
+
+  const removeFriend = useCallback(() => {
+    const userId = user.id;
+    if (currentUser) {
+      axios.post('/api/remover', { currentUserId: currentUser.id, userId })
+        .then(() => {
+          toast.success("Amigo removido");
+          router.refresh();
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.error);
+        });
+    }
+  }, [router, currentUser, user]);
+
+  const blockUser = useCallback(() => {
+    const userId = user.id;
+    if (currentUser) {
+      axios.post('/api/bloquear', { currentUserId: currentUser.id, userId })
+        .then(() => {
+          toast.success("Usuário bloqueado");
+          router.refresh();
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.error);
+        });
+    }
+  }, [router, currentUser, user]);
+
+  const unblockUser = useCallback(() => {
+    const userId = user.id;
+    if (currentUser) {
+      axios.post('/api/desbloquear', { currentUserId: currentUser.id, userId })
+        .then(() => {
+          toast.success("Usuário desbloqueado");
+          router.refresh();
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.error);
+        });
+    }
+  }, [router, currentUser, user]);
+
+
   return (
     <Container>
       <div className="max-2-screen-lg mx-auto">
@@ -24,6 +82,10 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
           <UserHead
             name={user.name || ''}
             imageSrc={user.image || ''}
+          />
+          <Button
+            label="Adicionar como Amigo"
+            onClick={addFriend}
           />
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <UserInfo

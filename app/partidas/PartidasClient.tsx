@@ -45,7 +45,6 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
     }, [router]);
 
     const handleMarkEventNotOccurred = useCallback((reservationId: string) => {
-        console.log(typeof reservationId)
         axios.post('/api/nao_ocorreu', { reservationId, rating: selectedRating })
             .then(() => {
                 toast.success("Evento marcado como não ocorrido");
@@ -57,7 +56,6 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
     }, [router, selectedRating]);
 
     const handleMarkEventOccurred = useCallback((reservationId: string) => {
-        console.log(typeof reservationId)
         axios.post('/api/ocorreu', { reservationId, rating: selectedRating })
             .then(() => {
                 toast.success("Evento marcado como ocorrido");
