@@ -50,6 +50,18 @@ export async function POST(
             grupo
         }
     });
+
+    const user = await prisma.user.update({
+        where: {
+            id: currentUser.id
+        },
+        data: {
+                numCreated: {
+                    increment: 1,
+                },
+            },
+    });
+
     return NextResponse.json(listing);
 }
     

@@ -31,5 +31,16 @@ export async function DELETE(
         }
     });
 
+    const user = await prisma.user.update({
+        where: {
+            id: currentUser.id
+        },
+        data: {
+                numCreated: {
+                    decrement: 1,
+                },
+            },
+    });
+
     return NextResponse.json(listing);
 }

@@ -19,9 +19,13 @@ model User {
   hashedPassword String?
   chavePix       String?
   isArena        Boolean?
+  rating         Int?
+  numCreated     Int?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   favoriteIds    String[]  @db.ObjectId
+  blockedUsers   String[]
+  friends        String[]
 
   accounts     Account[]
   eventons     Eventos[]

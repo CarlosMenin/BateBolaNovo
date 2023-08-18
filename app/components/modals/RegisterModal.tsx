@@ -46,7 +46,11 @@ const RegisterModal = () => {
             birthDate: '',
             password: '',
             chavePix: '',
-            isArena: false
+            isArena: false,
+            rating: 0,
+            numCreated: 0,
+            friends: [],
+            blockedUsers: [],
         }
     });
 

@@ -12,7 +12,11 @@ export async function POST(
         name,
         password,
         isArena,
-        chavePix
+        chavePix,
+        rating,
+        numCreated,
+        friends,
+        blockedUsers,
     } = body;
 
     const hashedPassword = await bcrypt.hash(password,12);
@@ -23,7 +27,10 @@ export async function POST(
             name,
             hashedPassword,
             isArena,
-            chavePix
+            chavePix,rating,
+            numCreated,
+            friends,
+            blockedUsers,
         }
     });
 

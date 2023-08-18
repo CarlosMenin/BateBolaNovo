@@ -93,7 +93,7 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                 '
             >
                 {reservations
-                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
+                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) > currentDate : new Date(reservation.eventos.data) >= currentDate))
                     .map((reservation) => {
                         const reservationId = reservation.id;
                         return (
