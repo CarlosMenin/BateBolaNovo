@@ -51,8 +51,11 @@ const Home = async ({ searchParams }: HomeProps) => {
           {sortedListings.map((listing) => {
             //Pular eventos que já ocorreram
             const eventDate = new Date(listing.data);
+            const eventTime = new Date(listing.horario);
+            const combinedEventDateTime = new Date(eventDate.toDateString() + ' ' + eventTime.toTimeString());
+
             const currentDate = new Date();
-            if (eventDate < currentDate){
+            if (combinedEventDateTime < currentDate) {
               return null;
             }
             //Mostrar eventos ainda disponíveis
