@@ -49,6 +49,7 @@ const RegisterModal = () => {
             isArena: false,
             rating: 0,
             numCreated: 0,
+            numAvaliacoes: 0,
             friends: [],
             blockedUsers: [],
         }

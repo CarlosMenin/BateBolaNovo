@@ -15,6 +15,7 @@ export async function POST(
         chavePix,
         rating,
         numCreated,
+        numAvaliacoes,
         friends,
         blockedUsers,
     } = body;
@@ -29,6 +30,7 @@ export async function POST(
             isArena,
             chavePix,rating,
             numCreated,
+            numAvaliacoes,
             friends,
             blockedUsers,
         }

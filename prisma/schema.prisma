@@ -21,6 +21,7 @@ model User {
   isArena        Boolean?
   rating         Int?
   numCreated     Int?
+  numAvaliacoes  Int?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   favoriteIds    String[]  @db.ObjectId
