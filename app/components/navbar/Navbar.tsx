@@ -32,9 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({
                     '>
                         <Logo />
                         <Search />
-                        <CleanFilter
-                            onClick={() => router.back}
-                        />
+                        <CleanFilter/>
                         <UserSearch />
                         <UserMenu currentUser={currentUser} />
                     </div>

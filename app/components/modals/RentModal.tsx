@@ -31,9 +31,8 @@ enum STEPS {
 }
 
 const isFutureDate = (date: Date) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // reset time to start of day
-  return date >= today;
+  const now = new Date();
+  return date > now;
 };
 
 const isFutureTime = (time: Date, selectedDate: Date) => {
@@ -48,25 +47,10 @@ const RentModal = () => {
   const router = useRouter();
   const rentModal = useRentModal();
 
-  const getDefaultDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow;
-  };
-
-  const getDefaultTime = () => {
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 0, 0);
-    return endOfDay;
-  };
-
-
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(getDefaultDate());
-  const [selectedTime, setSelectedTime] = useState(getDefaultTime());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const handleDateChange = (date: Date) => {
     console.log("Selected Date:", date);
@@ -85,6 +69,7 @@ const RentModal = () => {
   };
 
 
+  const [selectedTime, setSelectedTime] = useState(new Date());
 
   const handleTimeChange = (time: Date) => {
     if (!isFutureTime(time, selectedDate)) {
@@ -117,8 +102,8 @@ const RentModal = () => {
       description: '',
       endereco: '',
       cidade: '',
-      data: getDefaultDate().toISOString(),
-      horario: getDefaultTime().toISOString(),
+      data: selectedDate.toISOString(),
+      horario: selectedTime.toISOString(),
       grupo: '',
     }
   });
