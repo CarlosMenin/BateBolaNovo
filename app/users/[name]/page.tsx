@@ -1,5 +1,8 @@
 import React from 'react';
 import getUsers from "@/app/actions/getUsers";
+import ClientOnly from "@/app/components/ClientOnly";
+import ListingUser from "@/app/users/ListingUser"
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 interface IParams {
   name?: string;
@@ -7,6 +10,7 @@ interface IParams {
 
 const UserPage = async ({ params }: { params: IParams }) => {
   const user = await getUsers(params);
+  const currentUser = await getCurrentUser();
   
   const frases = ["Da próxima vez, chute a bola mais forte!",
                   "A bola caiu no vizinho... Tente de novo!",
@@ -35,7 +39,14 @@ const UserPage = async ({ params }: { params: IParams }) => {
     );
   }
     
-  return (<div>{user?.email}</div>);
+  return (
+    <ClientOnly>
+        <ListingUser
+            user={user}
+            currentUser={currentUser}
+        />
+      </ClientOnly>
+  );
 };
 
 export default UserPage;

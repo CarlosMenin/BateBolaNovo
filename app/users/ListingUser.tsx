@@ -1,8 +1,8 @@
-/*"use client";
+"use client";
 
 import Container from "@/app/components/Container";
-import ListingHead from "@/app/components/listings/ListingHead";
-import ListingInfo from "@/app/components/listings/ListingInfo";
+import UserHead from "@/app/components/listings/UserHead";
+import UserInfo from "@/app/components/listings/UserInfo";
 import { SafeUser } from "@/app/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -21,15 +21,15 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
     <Container>
       <div className="max-2-screen-lg mx-auto">
         <div className="flex flex-col gap-6">
-          <ListingHead
-            title={user.name || ''}
-            imageSrc={user.name || ''}
-            id={user.id}
-            currentUser={currentUser}
+          <UserHead
+            name={user.name || ''}
+            imageSrc={user.image || ''}
           />
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
-            <ListingInfo
+            <UserInfo
               user={user}
+              isArena={user.isArena}
+              TipoUsuario={"Normal"}
             />
             <div
               className="
@@ -46,4 +46,4 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
   );
 };
 
-export default ListingUser;*/
+export default ListingUser;
