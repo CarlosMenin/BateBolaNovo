@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { FieldErrors, FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
 
@@ -64,14 +64,9 @@ const RentModal = () => {
 
   const handleCategorySelect = (selectedCategory: string) => {
     setCustomValue('category', selectedCategory);
-
-    if (!imageSrc) {
-      // Se nenhuma imagem foi definida pelo usuário, uma imagem padrão baseada na categoria é selecionada
-      const defaultImagePath = `/images/${selectedCategory.toLowerCase()}.jpg`;
-      setCustomValue('imageSrc', defaultImagePath);
-    }
+    const defaultImagePath = `/images/${selectedCategory.toLowerCase()}.jpg`;
+    setCustomValue('imageSrc', defaultImagePath);
   };
-
 
 
   const [selectedTime, setSelectedTime] = useState(new Date());
@@ -121,6 +116,7 @@ const RentModal = () => {
   const Map = useMemo(() => dynamic(() => import("../Map"), {
     ssr: false
   }), [location]);
+
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
