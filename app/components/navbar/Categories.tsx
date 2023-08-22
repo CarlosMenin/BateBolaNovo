@@ -8,14 +8,14 @@ import { IoMdFootball } from "react-icons/io";
 
 export const categories = [
     {
-        label: 'Beach Tennis',
-        icon: TbBallTennis,
-        description: "A modalidade deste evento é beach tennis"
-    },
-    {
         label: 'Basquete',
         icon: TbBallBasketball,
         description: "A modalidade deste evento é basquete"
+    },
+    {
+        label: 'Beach Tennis',
+        icon: TbBallTennis,
+        description: "A modalidade deste evento é beach tennis"
     },
     {
         label: 'Boliche',
@@ -33,14 +33,14 @@ export const categories = [
         description: "A modalidade deste evento é futsal"
     },
     {
-        label: 'Volei',
-        icon: TbBallVolleyball,
-        description: "A modalidade deste evento é volei"
-    },
-    {
         label: 'Society',
         icon: TbSoccerField,
         description: "A modalidade deste evento é society"
+    },
+    {
+        label: 'Volei',
+        icon: TbBallVolleyball,
+        description: "A modalidade deste evento é volei"
     },
 ]
 
