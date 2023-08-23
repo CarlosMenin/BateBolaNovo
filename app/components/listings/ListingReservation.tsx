@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../Button';
-import Rating from '../Rating';
 import PaymentModal from '../modals/PaymentModal';
+import axios from 'axios';
 
 
 interface ListingReservationProps {
@@ -36,6 +36,9 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
             onSubmit();
         }
     };
+    const createPaymentModal = () => {
+        axios.post('/api/pagamento')
+    }
 
     return (
         <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">

@@ -42,5 +42,14 @@ export async function DELETE(
             },
     });
 
+    const payments = await prisma.pagamentos.updateMany({
+        where: {
+            eventId: listingId,
+        },
+        data:{
+            isDone: false,
+        }
+    })
+
     return NextResponse.json(listing);
 }

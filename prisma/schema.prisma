@@ -31,6 +31,7 @@ model User {
   accounts     Account[]
   eventons     Eventos[]
   confirmacoes Confirmacoes[]
+  pagamentos   Pagamentos[]
 }
 
 model Account {
@@ -74,6 +75,7 @@ model Eventos {
 
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   confirmacoes Confirmacoes[]
+  pagamentos   Pagamentos[]
 }
 
 model Confirmacoes {
@@ -87,6 +89,22 @@ model Confirmacoes {
   preco         Int
   created_at    DateTime @default(now())
 
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  eventos Eventos @relation(fields: [eventosId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventos    Eventos      @relation(fields: [eventosId], references: [id], onDelete: Cascade)
+  Pagamentos Pagamentos[]
+}
+
+model Pagamentos {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @db.ObjectId
+  eventUserId    String   @db.ObjectId
+  created_at     DateTime @default(now())
+  preco          Int
+  eventId        String   @db.ObjectId
+  confirmationId String   @db.ObjectId
+  isDone         Boolean
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventos      Eventos      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  confirmation Confirmacoes @relation(fields: [confirmationId], references: [id], onDelete: Cascade)
 }

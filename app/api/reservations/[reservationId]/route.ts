@@ -52,12 +52,20 @@ export async function DELETE(
         },
     });
 
-    // Delete the reservation
     await prisma.confirmacoes.delete({
         where: {
             id: reservationId,
         },
     });
+
+    const payments = await prisma.pagamentos.updateMany({
+        where: {
+            eventId: reservation.eventos.id,
+        },
+        data:{
+            isDone: false,
+        }
+    })
 
     return NextResponse.json(reservation);
 }

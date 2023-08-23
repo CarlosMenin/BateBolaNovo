@@ -24,7 +24,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         setTimeout(() => {
             onConfirm();
             setConfirming(false);
-        }, 15000);
+        }, 1000);
     };
 
     return (

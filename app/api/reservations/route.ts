@@ -17,7 +17,6 @@ export async function POST(request: Request) {
     return new NextResponse("Missing required fields.", { status: 400 });
   }
 
-  // Incrementar o número de confirmados em 1
   const listingAndReservation = await prisma.eventos.update({
     where: {
       id: listingid,
@@ -32,7 +31,6 @@ export async function POST(request: Request) {
           userName : name
         },
       },
-      // Incrementar o número de confirmados em 1
       numConfirmados: {
         increment: 1,
       },
