@@ -18,6 +18,8 @@ interface ListingUserProps {
 const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
   const router = useRouter();
 
+  const isCurrentUser = currentUser?.id === user.id;
+
   const addFriend = useCallback(() => {
     const userId = user.id;
     if (currentUser) {
@@ -86,14 +88,14 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
             imageSrc={user.image || ''}
           />
 
-         
+
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <UserInfo
               user={user}
               isArena={user.isArena || false}
               TipoUsuario={"Normal"}
             />
-           
+
             <div
               className="
                   order-first
@@ -103,30 +105,37 @@ const ListingUser: React.FC<ListingUserProps> = ({ user, currentUser }) => {
               "
             >
               <div className="mt-7">
-              {isFriend ? (
-                <Button
-                    label="Remover Amigo"
-                    onClick={removeFriend}
-                    />
-              ) : (
-              
-                <Button
-                  label="Adicionar como Amigo"
-                  onClick={addFriend}
-                />
-              )}
+                {!isCurrentUser && (
+                  <>
+                    {isFriend ? (
+                      <Button
+                        label="Remover Amigo"
+                        onClick={removeFriend}
+                      />
+                    ) : (
+                      <Button
+                        label="Adicionar como Amigo"
+                        onClick={addFriend}
+                      />
+                    )}
+                  </>
+                )}
               </div>
               <div className="mt-7">
-                {isBlock ? (
-                  <Button
-                      label="Desbloquear Usuário"
-                      onClick={unblockUser}
+                {!isCurrentUser && (
+                  <>
+                    {isBlock ? (
+                      <Button
+                        label="Desbloquear Usuário"
+                        onClick={unblockUser}
                       />
-                ) : (
-                <Button
-                  label="Bloquear Usuário"
-                  onClick={blockUser}
-                />
+                    ) : (
+                      <Button
+                        label="Bloquear Usuário"
+                        onClick={blockUser}
+                      />
+                    )}
+                  </>
                 )}
               </div>
             </div>

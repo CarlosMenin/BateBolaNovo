@@ -52,7 +52,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             </div>
             <hr />
             <div className="text-lg font-semibold text-neutral-800">
-                Avaliação: {currentUser?.rating} {currentUser?.numAvaliacoes && `(${currentUser.numAvaliacoes} avaliações)`}
+                Avaliações: {currentUser?.rating} {currentUser?.numAvaliacoes ? `(${currentUser.numAvaliacoes} avaliações)` : ''}
             </div>
         </div>
     )

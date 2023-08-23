@@ -38,23 +38,17 @@ const EventsClient: React.FC<EventsClientProps> = ({
             })
     }, [router]);
 
-    //const currentDate = new Date();
-
-    //const sortedListings = listings
-    //    .filter(listing => new Date(listing.data) >= currentDate)
-    //    .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
-
     const sortedListings = listings.sort((a, b) => {
         const dateA = new Date(a.data);
         const timeA = new Date(a.horario);
         const dateTimeA = new Date(dateA.toDateString() + ' ' + timeA.toTimeString());
-      
+
         const dateB = new Date(b.data);
         const timeB = new Date(b.horario);
         const dateTimeB = new Date(dateB.toDateString() + ' ' + timeB.toTimeString());
-      
-        return dateTimeA.getTime() - dateTimeB.getTime(); // Ascending order
-      });
+
+        return dateTimeA.getTime() - dateTimeB.getTime();
+    });
 
     return (
         <Container>

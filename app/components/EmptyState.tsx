@@ -12,13 +12,13 @@ interface EmptyState {
 
 const EmptyState: React.FC<EmptyState> = ({
     title = "Nenhum evento encontrado",
-    subtitle= "Tente mudar ou alterar alguns de seus filtros para encontrar eventos",
+    subtitle = "Tente mudar ou alterar alguns de seus filtros para encontrar eventos",
     showReset
 }) => {
     const router = useRouter();
-  return (
-    <div
-        className="
+    return (
+        <div
+            className="
             h-[60vh]
             flex
             flex-col
@@ -26,22 +26,22 @@ const EmptyState: React.FC<EmptyState> = ({
             justify-center
             items-center
         "
-    >
-        <Heading 
-            title={title}
-            subtitle={subtitle}
-        />
-        <div className="w-48 mt-4">
-            {showReset && (
-                <Button
-                    outline
-                    label="Remover todos os filtros"
-                    onClick={()=> router.push('/')}
-                />
-            )}
+        >
+            <Heading
+                title={title}
+                subtitle={subtitle}
+            />
+            <div className="w-48 mt-4">
+                {showReset && (
+                    <Button
+                        outline
+                        label="Remover todos os filtros"
+                        onClick={() => router.push('/')}
+                    />
+                )}
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default EmptyState

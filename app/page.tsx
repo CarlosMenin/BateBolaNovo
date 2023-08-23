@@ -56,7 +56,7 @@ const Home: React.FC<HomeProps> = async ({ searchParams }) => {
     const timeB = new Date(b.horario);
     const dateTimeB = new Date(dateB.toDateString() + ' ' + timeB.toTimeString());
 
-    return dateTimeA.getTime() - dateTimeB.getTime(); // Ascending order
+    return dateTimeA.getTime() - dateTimeB.getTime();
   });
 
   return (

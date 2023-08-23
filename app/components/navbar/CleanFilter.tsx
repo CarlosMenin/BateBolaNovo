@@ -9,7 +9,7 @@ const CleanFilter = () => {
 
     return (
         <div
-            onClick={()=> router.push('/')}
+            onClick={() => router.push('/')}
             className="
                 border-[1px]
                 w-full
@@ -24,7 +24,7 @@ const CleanFilter = () => {
         >
             <div className="flex flex-row items-center justify-between">
                 <div className="text-sm font-semibold px-6">
-                    Remover Filtros
+                    Página Inicial
                 </div>
             </div>
         </div>

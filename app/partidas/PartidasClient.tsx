@@ -66,7 +66,17 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
     }, [router, selectedRating]);
 
     const sortedReservations = reservations
-        .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
+        .filter(reservation => {
+            const eventDate = new Date(reservation.eventos.data);
+            const eventTime = new Date(reservation.eventos.horario);
+            const eventDateTime = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate(), eventTime.getHours(), eventTime.getMinutes()).getTime();
+
+            if (showPastEvents) {
+                return eventDateTime < currentDate.getTime();
+            } else {
+                return eventDateTime >= currentDate.getTime();
+            }
+        })
         .sort((a, b) => new Date(a.eventos.data).getTime() - new Date(b.eventos.data).getTime());
 
     return (
