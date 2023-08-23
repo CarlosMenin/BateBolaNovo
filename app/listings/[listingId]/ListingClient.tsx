@@ -7,7 +7,6 @@ import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { SafeListing, SafeUser, SafeReservations } from "@/app/types"
-import { Confirmacoes } from "@prisma/client"
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";

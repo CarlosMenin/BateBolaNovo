@@ -11,6 +11,7 @@ import { SafeUser } from '@/app/types';
 import useRentModal from '@/app/hooks/useRentModal';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 interface UserMenuProps {
     currentUser?: SafeUser | null;
@@ -36,20 +37,30 @@ const UserMenu: React.FC<UserMenuProps> = ({
         }
 
         if (!currentUser.isArena) {
-            try {
-                const response = await fetch(`api/canRent?userId=${currentUser.id}`);
-                if (response.status !== 200) {
-                    const data = await response.json();
-                    toast.error(data.error);
-                    return;
-                }
-            } catch (error) {
-                toast.error("An error occurred while checking permissions.");
-                return;
-            }
-        }
+            axios.post('/api/canrent')
+                .then(response => {
+                    const listing = response.data;
 
-        rentModal.onOpen();
+                    if (listing && Array.isArray(listing)) {
+                        const numberOfEvents = listing.length;
+
+                        if (numberOfEvents > 0) {
+                            toast.error("Usuário já tem eventos futuros criados");
+                        } else {
+                            rentModal.onOpen();
+                        }
+                    } else {
+                        console.error("Invalid response format:", listing);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching canRent data:", error);
+                });
+
+        }
+        else {
+            rentModal.onOpen();
+        }
 
     }, [currentUser, loginModal, rentModal])
     return (
