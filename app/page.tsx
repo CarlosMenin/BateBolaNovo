@@ -58,6 +58,10 @@ const Home = async ({ searchParams }: HomeProps) => {
             if (combinedEventDateTime < currentDate) {
               return null;
             }
+            if(currentUser?.blockedUsers.includes(listing.userId))
+            {
+                return;
+            }
             //Mostrar eventos ainda disponíveis
             return (
               <ListingCard

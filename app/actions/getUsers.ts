@@ -4,7 +4,7 @@ import { formatISO } from 'date-fns';
 import { Url } from 'next/dist/shared/lib/router/router';
 
 export interface IUserParams {
-    name?: string;
+    name?: string | null;
 }
 
 export default async function getUsers(

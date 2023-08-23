@@ -80,7 +80,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
     const userNames = reservations.map(reservation => reservation.userName ?? "Nome Desconhecido");
 
-
     return (
         <Container>
             <div className="max-2-screen-lg mx-auto">

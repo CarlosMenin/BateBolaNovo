@@ -4,6 +4,13 @@ import { useRouter } from 'next/navigation';
 
 const CleanFilter = () => {
     const router = useRouter();
+    const currentUrl: string = window.location.href;
+    console.log(currentUrl);
+
+    if(window.location.pathname === ("/")){
+        return null;
+    }
+
     return (
         <div
             onClick={()=> router.push('/')}

@@ -1,7 +1,5 @@
 'use client';
 
-import getListings, { IListingsParams } from "@/app/actions/getListings";
-
 import { AiOutlineMenu } from 'react-icons/ai'
 import Avatar from '../Avatar';
 import { useCallback, useState } from 'react';
@@ -12,9 +10,6 @@ import { signOut } from 'next-auth/react';
 import { SafeUser } from '@/app/types';
 import useRentModal from '@/app/hooks/useRentModal';
 import { useRouter } from 'next/navigation';
-import { toast } from "react-hot-toast";
-import { formatISO } from 'date-fns';
-
 
 interface UserMenuProps {
     currentUser?: SafeUser | null;
@@ -33,26 +28,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
         setIsOpen((value) => !value);
 
     }, []);
-   
 
-    const onRent = useCallback(async () => {
+    const onRent = useCallback(() => {
         if (!currentUser) {
             return loginModal.onOpen();
         }
-
-        if (!currentUser.isArena) {
-            try {
-              const response = await fetch(`/api/canRent?userId=${currentUser.id}`);
-              if (response.status !== 200) {
-                const data = await response.json();
-                toast.error(data.error);
-                return;
-              }
-            } catch (error) {
-              toast.error("An error occurred while checking permissions.");
-              return;
-            }
-          }
 
         rentModal.onOpen();
 
@@ -87,10 +67,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                     label="Meus Eventos"
                                 />
                                 <MenuItem
-                                    onClick={rentModal.onOpen}
-                                    label="Criar Meu Evento"
-                                />
-                                <MenuItem
                                     onClick={() => router.push('/favoritos')}
                                     label="Eventos Favoritados"
                                 />
@@ -102,6 +78,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                     onClick={() => router.push("/partidas")}
 
                                     label="Minhas Partidas"
+                                />
+                                <MenuItem
+                                    onClick={() => router.push("/perfil")}
+
+                                    label="Meu Perfil"
                                 />
                                 <hr />
                                 <MenuItem
