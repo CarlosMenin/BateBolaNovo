@@ -82,6 +82,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                     label="Meus Eventos"
                                 />
                                 <MenuItem
+                                    onClick={() => router.push('/lista_amigos')}
+                                    label="Lista de Amigos"
+                                />
+                                <MenuItem
                                     onClick={() => router.push('/favoritos')}
                                     label="Eventos Favoritados"
                                 />
