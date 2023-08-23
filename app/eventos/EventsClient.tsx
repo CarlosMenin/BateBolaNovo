@@ -40,6 +40,10 @@ const EventsClient: React.FC<EventsClientProps> = ({
 
     const currentDate = new Date();
 
+    const sortedListings = listings
+        .filter(listing => new Date(listing.data) >= currentDate)
+        .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
+
     return (
         <Container>
             <Heading
@@ -48,33 +52,31 @@ const EventsClient: React.FC<EventsClientProps> = ({
             />
             <div
                 className="
-                    mt-10
-                    grid
-                    grid-cols-1
-                    sm:grid-cols-2
-                    md:grid-cols-3
-                    lg:grid-cols-4
-                    xl:grid-cols-5
-                    2xl:grid-cols-6
-                    gap-8
-                "
+          mt-10
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          2xl:grid-cols-6
+          gap-8
+        "
             >
-                {listings
-                    .filter(listing => new Date(listing.data) >= currentDate)
-                    .map((listing) => (
-                        <ListingCard
-                            key={listing.id}
-                            data={listing}
-                            actionId={listing.id}
-                            onAction={onCancel}
-                            disabled={deletingId === listing.id}
-                            actionLabel="Cancelar evento"
-                            currentUser={currentUser}
-                        />
-                    ))}
+                {sortedListings.map((listing) => (
+                    <ListingCard
+                        key={listing.id}
+                        data={listing}
+                        actionId={listing.id}
+                        onAction={onCancel}
+                        disabled={deletingId === listing.id}
+                        actionLabel="Cancelar evento"
+                        currentUser={currentUser}
+                    />
+                ))}
             </div>
         </Container>
-    )
+    );
 }
 
 export default EventsClient;

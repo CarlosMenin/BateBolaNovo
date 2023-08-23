@@ -67,44 +67,30 @@ const ListingCard: React.FC<ListingCardProps> = ({
     return (
         <div
             onClick={() => router.push(`/listings/${data.id}`)}
-            className="
-            col-span-1 cursor-pointer group
-        "
+            className="col-span-1 cursor-pointer group"
         >
             <div className="flex flex-col gap-2 w-full">
                 <div
-                    className="
-                    aspect-square
-                    w-full
-                    relative
-                    overflow-hidden
-                    rounded-xl
-                "
+                    className="aspect-square w-full relative overflow-hidden rounded-xl"
                 >
                     <Image
                         fill
                         alt="Eventos"
                         src={data.imageSrc}
-                        className="
-                        object-cover
-                        h-full
-                        w-full
-                        group-hover:scale-110
-                        transition
-                    "
+                        className="object-cover h-full w-full group-hover:scale-110 transition"
                     />
                     <div className="absolute top-3 right-3">
-                        <HeartButton
-                            listingId={data.id}
-                            currentUser={currentUser}
-                        />
+                        <HeartButton listingId={data.id} currentUser={currentUser} />
                     </div>
                 </div>
-                <div className="font-semibold text-lg">
+                <div className="font-semibold text-lg break-all">
                     {data.cidade}, {location?.label}
                 </div>
-                <div className="font-light text-neutral-800">
-                    {data.category}, {format(data.data, 'dd/MM')}, {format(data.horario, 'HH:mm')}
+                <div className="font-light text-neutral-800 break-all">
+                    {data.category},{" "}
+                    {format(data.data, 'dd/MM')}
+                    <wbr />,{" "}
+                    {format(data.horario, 'HH:mm')}
                 </div>
                 <div className="flex flex-row items-center gap-1">
                     <div className="font-semibold">
@@ -121,7 +107,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 )}
             </div>
         </div>
-    )
+    );
 }
 
-export default ListingCard
+export default ListingCard;

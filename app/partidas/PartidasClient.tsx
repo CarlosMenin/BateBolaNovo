@@ -25,7 +25,6 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
     const [showPastEvents, setShowPastEvents] = useState(false);
     const [selectedRating, setSelectedRating] = useState(3);
 
-
     const currentDate = new Date();
 
     const onCancel = useCallback((id: string) => {
@@ -66,6 +65,10 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
             })
     }, [router, selectedRating]);
 
+    const sortedReservations = reservations
+        .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
+        .sort((a, b) => new Date(a.eventos.data).getTime() - new Date(b.eventos.data).getTime());
+
     return (
         <Container>
             <Heading
@@ -82,75 +85,73 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
             </div>
             <div
                 className='
-                    mt-10
-                    grid
-                    grid-cols-1
-                    sm:grid-cols-2
-                    md:grid-cols-3
-                    lg:grid-cols-4
-                    xl:grid-cols-5
-                    2xl:grid-cols-6
-                    gap-8
-                '
+          mt-10
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          2xl:grid-cols-6
+          gap-8
+        '
             >
-                {reservations
-                    .filter(reservation => (showPastEvents ? new Date(reservation.eventos.data) < currentDate : new Date(reservation.eventos.data) >= currentDate))
-                    .map((reservation) => {
-                        const reservationId = reservation.id;
-                        return (
-                            <div key={reservation.id} className="relative">
-                                <ListingCard
-                                    data={reservation.eventos}
-                                    confirmation={reservation}
-                                    actionId={reservation.id}
-                                    onAction={onCancel}
-                                    disabled={deletingId === reservation.id}
-                                    currentUser={currentUser}
-                                    actionLabel={showPastEvents ? undefined : 'Cancelar presença no evento'}
-                                />
-                                {showPastEvents && !reservation.hasPaid && (
-                                    <div className="mt-2">
-                                        <Rating
-                                            initialValue={3}
-                                            onChange={(newRating) => setSelectedRating(newRating)}
-                                        />
-                                    </div>
-                                )}
-                                {showPastEvents && (
-                                    <div className="mt-2 ml-4 space-x-4">
-                                        {!reservation.hasPaid && (
-                                            <>
-                                                <button
-                                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-                                                    onClick={() => {
-                                                        handleMarkEventNotOccurred(reservationId);
-                                                    }}
-                                                >
-                                                    Não Ocorreu
-                                                </button>
-                                                <button
-                                                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                                                    onClick={() => {
-                                                        handleMarkEventOccurred(reservationId);
-                                                    }}
-                                                >
-                                                    Ocorreu
-                                                </button>
-                                            </>
-                                        )}
-                                        {reservation.hasPaid && (
+                {sortedReservations.map((reservation) => {
+                    const reservationId = reservation.id;
+                    return (
+                        <div key={reservation.id} className="relative">
+                            <ListingCard
+                                data={reservation.eventos}
+                                confirmation={reservation}
+                                actionId={reservation.id}
+                                onAction={onCancel}
+                                disabled={deletingId === reservation.id}
+                                currentUser={currentUser}
+                                actionLabel={showPastEvents ? undefined : 'Cancelar presença no evento'}
+                            />
+                            {showPastEvents && !reservation.hasPaid && (
+                                <div className="mt-2">
+                                    <Rating
+                                        initialValue={3}
+                                        onChange={(newRating) => setSelectedRating(newRating)}
+                                    />
+                                </div>
+                            )}
+                            {showPastEvents && (
+                                <div className="mt-2 ml-4 space-x-4">
+                                    {!reservation.hasPaid && (
+                                        <>
                                             <button
-                                                className="px-6 py-2 bg-purple-800 text-white rounded-md"
-                                                style={{ minWidth: '200px' }}
+                                                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                                onClick={() => {
+                                                    handleMarkEventNotOccurred(reservationId);
+                                                }}
                                             >
-                                                {reservation.eventos.numOcorreu} / {reservation.eventos.numPessoas}
+                                                Não Ocorreu
                                             </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
+                                            <button
+                                                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                                                onClick={() => {
+                                                    handleMarkEventOccurred(reservationId);
+                                                }}
+                                            >
+                                                Ocorreu
+                                            </button>
+                                        </>
+                                    )}
+                                    {reservation.hasPaid && (
+                                        <button
+                                            className="px-6 py-2 bg-purple-800 text-white rounded-md"
+                                            style={{ minWidth: '200px' }}
+                                        >
+                                            {reservation.eventos.numOcorreu} / {reservation.eventos.numPessoas}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </Container>
     );

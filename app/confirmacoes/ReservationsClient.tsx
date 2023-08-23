@@ -40,6 +40,10 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
 
     const currentDate = new Date();
 
+    const sortedReservations = reservations
+        .filter(reservation => (!currentUser || reservation.userId !== currentUser.id) && new Date(reservation.eventos.data) >= currentDate)
+        .sort((a, b) => new Date(a.eventos.data).getTime() - new Date(b.eventos.data).getTime());
+
     return (
         <Container>
             <Heading
@@ -48,41 +52,39 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             />
             <div
                 className="
-                    mt-10
-                    grid
-                    grid-cols-1
-                    sm:grid-cols-2
-                    md:grid-cols-3
-                    lg:grid-cols-4
-                    xl:grid-cols-5
-                    2xl:grid-cols-6
-                    gap-8
-                "
+          mt-10
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          2xl:grid-cols-6
+          gap-8
+        "
             >
-                {reservations
-                    .filter(reservation => (!currentUser || reservation.userId !== currentUser.id) && new Date(reservation.eventos.data) >= currentDate)
-                    .map((reservation) => (
-                        <div key={reservation.id}>
-                            {currentUser && (
-                                <div>
-                                    Nome do Usuário: {reservation.userName}
-                                    <ListingCard
-                                        key={reservation.id}
-                                        data={reservation.eventos}
-                                        confirmation={reservation}
-                                        actionId={reservation.id}
-                                        onAction={onCancel}
-                                        disabled={deletingId === reservation.id}
-                                        actionLabel="Cancelar participação do usuário"
-                                        currentUser={currentUser}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                {sortedReservations.map((reservation) => (
+                    <div key={reservation.id}>
+                        {currentUser && (
+                            <div>
+                                Nome do Usuário: {reservation.userName}
+                                <ListingCard
+                                    key={reservation.id}
+                                    data={reservation.eventos}
+                                    confirmation={reservation}
+                                    actionId={reservation.id}
+                                    onAction={onCancel}
+                                    disabled={deletingId === reservation.id}
+                                    actionLabel="Cancelar participação do usuário"
+                                    currentUser={currentUser}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))}
             </div>
         </Container>
     )
 }
 
-export default ReservationsClient
+export default ReservationsClient;

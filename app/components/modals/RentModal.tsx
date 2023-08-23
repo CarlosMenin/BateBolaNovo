@@ -238,7 +238,13 @@ const RentModal = () => {
           title="Participantes"
           subtitle="Quantos jogadores irão participar do seu evento?"
           value={numPessoas}
-          onChange={(value) => setCustomValue('numPessoas', value)}
+          onChange={(value) => {
+            if (value > 30) {
+              toast.error("O número máximo de participantes é 30!");
+              return;
+            }
+            setCustomValue('numPessoas', value);
+          }}
         />
         <DataInput
           title="Select a Date"
