@@ -1,3 +1,4 @@
+import React from 'react';
 import getCurrentUser from "./actions/getCurrentUser";
 import getListings, { IListingsParams } from "./actions/getListings";
 
@@ -5,17 +6,48 @@ import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";
 import ListingCard from "./components/listings/ListingCard";
+import getUserById from './actions/getUserBlock';
 
 interface HomeProps {
   searchParams: IListingsParams;
 }
 
-const Home = async ({ searchParams }: HomeProps) => {
+const Home: React.FC<HomeProps> = async ({ searchParams }) => {
   const listings = await getListings(searchParams);
   const currentUser = await getCurrentUser();
 
-  // Sorting listings by date
-  const sortedListings = listings.sort((a, b) => {
+  const sortedListings = [];
+
+  for (const listing of listings) {
+    const eventDate = new Date(listing.data);
+    const eventTime = new Date(listing.horario);
+    const combinedEventDateTime = new Date(eventDate.toDateString() + ' ' + eventTime.toTimeString());
+    const currentDate = new Date();
+
+    if (combinedEventDateTime < currentDate) {
+      continue; // Pula eventos passados
+    }
+
+    let isBlocked = false;
+
+    if (currentUser && currentUser.blockedUsers) {
+      isBlocked = currentUser.blockedUsers.includes(listing.userId);
+    }
+
+    if (!isBlocked && currentUser) {
+      const userBlockedUsers = await getUserById({ id: listing.userId });
+
+      if (userBlockedUsers && userBlockedUsers.includes(currentUser.id)) {
+        isBlocked = true;
+      }
+    }
+
+    if (!isBlocked) {
+      sortedListings.push(listing);
+    }
+  }
+
+  const sortedAndFilteredEvents = sortedListings.sort((a, b) => {
     const dateA = new Date(a.data);
     const timeA = new Date(a.horario);
     const dateTimeA = new Date(dateA.toDateString() + ' ' + timeA.toTimeString());
@@ -27,13 +59,6 @@ const Home = async ({ searchParams }: HomeProps) => {
     return dateTimeA.getTime() - dateTimeB.getTime(); // Ascending order
   });
 
-  if (listings.length == 0) {
-    return (
-      <ClientOnly>
-        <EmptyState showReset />
-      </ClientOnly>
-    )
-  }
   return (
     <ClientOnly>
       <Container>
@@ -48,33 +73,21 @@ const Home = async ({ searchParams }: HomeProps) => {
           2xl:grid-cols-6
           gap-8
         ">
-          {sortedListings.map((listing) => {
-            //Pular eventos que já ocorreram
-            const eventDate = new Date(listing.data);
-            const eventTime = new Date(listing.horario);
-            const combinedEventDateTime = new Date(eventDate.toDateString() + ' ' + eventTime.toTimeString());
-
-            const currentDate = new Date();
-            if (combinedEventDateTime < currentDate) {
-              return null;
-            }
-            if(currentUser?.blockedUsers.includes(listing.userId))
-            {
-                return;
-            }
-            //Mostrar eventos ainda disponíveis
-            return (
+          {sortedAndFilteredEvents.length === 0 ? (
+            <EmptyState showReset />
+          ) : (
+            sortedAndFilteredEvents.map((listing) => (
               <ListingCard
                 currentUser={currentUser}
                 key={listing.id}
                 data={listing}
               />
-            )
-          })}
+            ))
+          )}
         </div>
       </Container>
     </ClientOnly>
-  )
-}
+  );
+};
 
 export default Home;
