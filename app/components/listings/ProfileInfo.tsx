@@ -35,7 +35,6 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                 "
                 >
                     <div>Usuário: {currentUser?.name}</div>
-                    <Avatar src={currentUser?.image} />
                 </div>
                 <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
                     <div>
