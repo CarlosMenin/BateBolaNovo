@@ -7,7 +7,6 @@ import ReservationsClient from "./ReservationsClient";
 
 const ReservationsPage = async () => {
     const currentUser = await getCurrentUser();
-
     if (!currentUser) {
         return (
             <ClientOnly>
@@ -20,14 +19,14 @@ const ReservationsPage = async () => {
     }
 
     const reservations = await getReservations({
-        authorId: currentUser.id
+        userId: currentUser.id,
     });
     if (reservations.length === 0) {
         return (
             <ClientOnly>
                 <EmptyState
-                    title="Nenhuma confirmação encontrada"
-                    subtitle="Parece que nenhum jogador se confirmou para o seu evento"
+                    title="Nenhum pagamento encontrado"
+                    subtitle="Parece que você não participou de nenhum evento"
                 />
             </ClientOnly>
         )

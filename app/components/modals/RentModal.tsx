@@ -108,6 +108,7 @@ const RentModal = () => {
       numPessoas: 1,
       numConfirmados: 0,
       numOcorreu: 0,
+      numNaoOcorreu: 0,
       imageSrc: '',
       preco: 1,
       title: '',

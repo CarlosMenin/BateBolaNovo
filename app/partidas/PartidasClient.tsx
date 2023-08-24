@@ -27,6 +27,8 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
 
     const currentDate = new Date();
 
+
+
     const onCancel = useCallback((id: string) => {
         setDeletingId(id);
 
@@ -108,6 +110,19 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
             >
                 {sortedReservations.map((reservation) => {
                     const reservationId = reservation.id;
+                    const participationThreshold = 0.7 * (reservation.eventos.numOcorreu + reservation.eventos.numNaoOcorreu);
+
+                    if (participationThreshold && !reservation.hasPaid) {
+                        axios.post('/api/payment', { eventId: reservation.eventosId, numOcorreu: reservation.eventos.numOcorreu, numNaoOcorreu: reservation.eventos.numNaoOcorreu })
+                            .then(() => {
+                                toast.success("Evento marcado como completo");
+                                router.refresh();
+                            })
+                            .catch((error) => {
+                                toast.error(error?.response?.data?.error);
+                            });
+                    }
+
                     return (
                         <div key={reservation.id} className="relative">
                             <ListingCard
@@ -154,11 +169,12 @@ const PartidasClient: React.FC<PartidasClientProps> = ({
                                             className="px-6 py-2 bg-purple-800 text-white rounded-md"
                                             style={{ minWidth: '200px' }}
                                         >
-                                            {reservation.eventos.numOcorreu} / {reservation.eventos.numPessoas}
+                                            {reservation.eventos.numOcorreu + reservation.eventos.numNaoOcorreu} / {reservation.eventos.numPessoas}
                                         </button>
                                     )}
                                 </div>
                             )}
+
                         </div>
                     );
                 })}

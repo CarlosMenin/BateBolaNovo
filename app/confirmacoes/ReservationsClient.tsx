@@ -38,23 +38,14 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             })
     }, [router]);
 
-    const currentDate = new Date();
-
     const sortedReservations = reservations
-        .filter(reservation => {
-            const eventDate = new Date(reservation.eventos.data);
-            const eventTime = new Date(reservation.eventos.horario);
-            const eventDateTime = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate(), eventTime.getHours(), eventTime.getMinutes()).getTime();
-
-            return (!currentUser || reservation.userId !== currentUser.id) && eventDateTime >= currentDate.getTime();
-        })
         .sort((a, b) => new Date(a.eventos.data).getTime() - new Date(b.eventos.data).getTime());
 
     return (
         <Container>
             <Heading
-                title="Confirmações"
-                subtitle="Jogadores interessados em seu evento"
+                title="Pagamentos"
+                subtitle="Pagamentos realizados"
             />
             <div
                 className="
@@ -71,21 +62,24 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             >
                 {sortedReservations.map((reservation) => (
                     <div key={reservation.id}>
-                        {currentUser && (
-                            <div>
-                                Nome do Usuário: {reservation.userName}
-                                <ListingCard
-                                    key={reservation.id}
-                                    data={reservation.eventos}
-                                    confirmation={reservation}
-                                    actionId={reservation.id}
-                                    onAction={onCancel}
-                                    disabled={deletingId === reservation.id}
-                                    actionLabel="Cancelar participação do usuário"
-                                    currentUser={currentUser}
-                                />
+                        <div>
+                            <ListingCard
+                                key={reservation.id}
+                                data={reservation.eventos}
+                                confirmation={reservation}
+                                actionId={reservation.id}
+                                disabled={deletingId === reservation.id}
+                                currentUser={currentUser}
+                            />
+                            <div className="mt-2">
+                                <button
+                                    className={`text-white font-semibold px-4 py-2 rounded ${reservation.isPaid ? 'bg-green-500' : 'bg-red-500'
+                                        }`}
+                                >
+                                    {reservation.isPaid ? 'Realizado' : 'Reembolsado'}
+                                </button>
                             </div>
-                        )}
+                        </div>
                     </div>
                 ))}
             </div>

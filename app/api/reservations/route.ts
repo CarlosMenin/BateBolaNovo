@@ -28,7 +28,8 @@ export async function POST(request: Request) {
           preco: price,
           dataEvento: eventDate,
           horarioEvento: eventTime,
-          userName : name
+          userName : name,
+          isPaid: true,
         },
       },
       numConfirmados: {

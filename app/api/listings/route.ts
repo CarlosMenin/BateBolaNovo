@@ -27,6 +27,7 @@ export async function POST(
         cidade,
         numConfirmados,
         numOcorreu,
+        numNaoOcorreu,
         grupo,
     } = body;
 
@@ -46,6 +47,7 @@ export async function POST(
             cidade,
             numConfirmados,
             numOcorreu,
+            numNaoOcorreu,
             chavePix: currentUser.chavePix || '',
             grupo
         }

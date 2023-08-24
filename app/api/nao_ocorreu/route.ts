@@ -55,8 +55,8 @@ export async function POST(request: Request) {
                 id: event.id,
             },
             data: {
-                numOcorreu: {
-                    decrement: 1,
+                numNaoOcorreu: {
+                    increment: 1,
                 },
             },
         });

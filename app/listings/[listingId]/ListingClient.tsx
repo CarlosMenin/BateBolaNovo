@@ -62,22 +62,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 const reserva = response.data;
                 toast.success("Presença confirmada");
 
-                if (listing.preco > 0) {
-                    axios
-                        .post("/api/pagamento", {
-                            preco: listing.preco,
-                            eventId: listing?.id,
-                            eventUserId: listing.userId,
-                            confirmationId: reserva.id
-                        })
-                        .then(() => {
-                            toast.success("Pagamento confirmado");
-                        })
-                        .catch(() => {
-                            toast.error("Algo deu errado");
-                        })
-                }
-
                 router.push('/partidas');
             })
             .catch(() => {

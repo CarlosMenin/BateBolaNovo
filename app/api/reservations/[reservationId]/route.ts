@@ -58,12 +58,12 @@ export async function DELETE(
         },
     });
 
-    const payments = await prisma.pagamentos.updateMany({
+    const payments = await prisma.confirmacoes.updateMany({
         where: {
-            eventId: reservation.eventos.id,
+            id: reservation.id,
         },
         data:{
-            isDone: false,
+            isPaid: false,
         }
     })
 
